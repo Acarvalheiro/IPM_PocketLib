@@ -18,10 +18,10 @@
         </ion-toolbar>
       </ion-header>
     
-      <div class="container">
-        <strong>Ready to create an app?</strong>
-        <p>Start with Ionic <router-link to="/book">BookPage {{decimal}}</router-link></p>
+      <div id="logoImage"> 
+        <img :src="require('@/assets/PocketLib.png')" >
       </div>
+
       <div class="container">
         <SearchComponent/>
       </div>
@@ -34,9 +34,10 @@
 
 <script lang="ts">
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonButton, IonButtons, IonMenuButton, IonMenu } from '@ionic/vue';
-import { defineComponent } from 'vue';
+import { defineComponent, computed } from 'vue';
 import MenuComponent from '@/components/MenuComponent.vue'
 import SearchComponent from '@/components/SearchComponent.vue'
+import { setupConfig } from '@ionic/core';
 
 let num = 0;
 
@@ -55,6 +56,13 @@ export default defineComponent({
     SearchComponent
   },
 
+  setup() {
+    const image = computed(() => require('@/assets/PocketLib.png'))
+    return {
+      image,
+    }
+  },
+
   data() {{
     return {
       decimal: num,
@@ -62,11 +70,9 @@ export default defineComponent({
   }},
 
   methods: {
-
     increment(){
       this.decimal++;
     }
-
   }
 
 });
@@ -103,7 +109,6 @@ export default defineComponent({
 
 #counter {
   text-align: center;
-  
   position: absolute;
   left: 0;
   right: 0;
@@ -114,6 +119,14 @@ export default defineComponent({
 #counter strong {
   font-size: 20px;
   line-height: 26px;
+}
+
+#logoImage {
+  position: absolute;
+  top: 10%;
+  left: 0;
+  right: 0;
+  text-align: center;
 }
 
 </style>
