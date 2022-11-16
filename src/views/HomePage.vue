@@ -1,8 +1,13 @@
 <template>
-  <ion-page>
+
+  <MenuComponent/>
+
+  <ion-page id="main-component">
     <ion-header :translucent="true">
       <ion-toolbar>
-        <ion-title>Home Page</ion-title>
+        <ion-buttons slot="start">
+          <ion-menu-button></ion-menu-button>
+        </ion-buttons>
       </ion-toolbar>
     </ion-header>
     
@@ -17,6 +22,9 @@
         <strong>Ready to create an app?</strong>
         <p>Start with Ionic <router-link to="/book">BookPage {{decimal}}</router-link></p>
       </div>
+      <div class="container">
+        <SearchComponent/>
+      </div>
       <div class="container" style="top: 75%;">
         <ion-button @click="increment">Increment</ion-button>
       </div>
@@ -25,8 +33,10 @@
 </template>
 
 <script lang="ts">
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonButton } from '@ionic/vue';
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonButton, IonButtons, IonMenuButton, IonMenu } from '@ionic/vue';
 import { defineComponent } from 'vue';
+import MenuComponent from '@/components/MenuComponent.vue'
+import SearchComponent from '@/components/SearchComponent.vue'
 
 let num = 0;
 
@@ -38,7 +48,11 @@ export default defineComponent({
     IonPage,
     IonTitle,
     IonToolbar,
-    IonButton
+    IonButton,
+    IonButtons,
+    IonMenuButton,
+    MenuComponent,
+    SearchComponent
   },
 
   data() {{
@@ -61,7 +75,6 @@ export default defineComponent({
 <style scoped>
 .container {
   text-align: center;
-  
   position: absolute;
   left: 0;
   right: 0;

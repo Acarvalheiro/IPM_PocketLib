@@ -60,8 +60,8 @@ export default defineComponent({
   }},
 
   mounted() {
-    axios
-      .get(/*some api here, that transmits the data*/)
+    //axios
+    //  .get(/*some api here, that transmits the data*/)
   }
 
 
