@@ -25,15 +25,12 @@
       <div class="container">
         <SearchComponent/>
       </div>
-      <div class="container" style="top: 75%;">
-        <ion-button @click="increment">Increment</ion-button>
-      </div>
     </ion-content>
   </ion-page>
 </template>
 
 <script lang="ts">
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonButton, IonButtons, IonMenuButton, IonMenu } from '@ionic/vue';
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonButtons, IonMenuButton, IonMenu } from '@ionic/vue';
 import { defineComponent, computed } from 'vue';
 import MenuComponent from '@/components/MenuComponent.vue'
 import SearchComponent from '@/components/SearchComponent.vue'
@@ -49,7 +46,6 @@ export default defineComponent({
     IonPage,
     IonTitle,
     IonToolbar,
-    IonButton,
     IonButtons,
     IonMenuButton,
     MenuComponent,
