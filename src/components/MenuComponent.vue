@@ -11,9 +11,9 @@
           <ion-icon name="home" slot="start"></ion-icon>
           <ion-label>Home</ion-label>
         </ion-item>
-        <ion-item>
+        <ion-item >
           <ion-icon name="person" slot="start"></ion-icon>
-          <ion-label>Profile</ion-label>
+          <router-link to="/profile"><ion-label>Profile</ion-label></router-link>
         </ion-item>
         <ion-item>
           <ion-icon name="chatbubbles" slot="start"></ion-icon>
