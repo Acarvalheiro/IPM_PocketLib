@@ -1,8 +1,13 @@
 <template>
-  <ion-page>
+
+  <MenuComponent/>
+
+  <ion-page id="main-component">
     <ion-header :translucent="true">
       <ion-toolbar>
-        <ion-title>Home Page</ion-title>
+        <ion-buttons slot="start">
+          <ion-menu-button></ion-menu-button>
+        </ion-buttons>
       </ion-toolbar>
     </ion-header>
     
@@ -13,9 +18,12 @@
         </ion-toolbar>
       </ion-header>
     
+      <div id="logoImage"> 
+        <img :src="require('@/assets/PocketLib.png')" >
+      </div>
+
       <div class="container">
-        <strong>Ready to create an app?</strong>
-        <p>Start with Ionic <router-link to="/book">BookPage {{decimal}}</router-link></p>
+        <SearchComponent/>
       </div>
       <div class="container" style="top: 75%;">
         <ion-button @click="increment">Increment</ion-button>
@@ -25,8 +33,11 @@
 </template>
 
 <script lang="ts">
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonButton } from '@ionic/vue';
-import { defineComponent } from 'vue';
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonButton, IonButtons, IonMenuButton, IonMenu } from '@ionic/vue';
+import { defineComponent, computed } from 'vue';
+import MenuComponent from '@/components/MenuComponent.vue'
+import SearchComponent from '@/components/SearchComponent.vue'
+import { setupConfig } from '@ionic/core';
 
 let num = 0;
 
@@ -38,7 +49,18 @@ export default defineComponent({
     IonPage,
     IonTitle,
     IonToolbar,
-    IonButton
+    IonButton,
+    IonButtons,
+    IonMenuButton,
+    MenuComponent,
+    SearchComponent
+  },
+
+  setup() {
+    const image = computed(() => require('@/assets/PocketLib.png'))
+    return {
+      image,
+    }
   },
 
   data() {{
@@ -48,11 +70,9 @@ export default defineComponent({
   }},
 
   methods: {
-
     increment(){
       this.decimal++;
     }
-
   }
 
 });
@@ -61,7 +81,6 @@ export default defineComponent({
 <style scoped>
 .container {
   text-align: center;
-  
   position: absolute;
   left: 0;
   right: 0;
@@ -90,7 +109,6 @@ export default defineComponent({
 
 #counter {
   text-align: center;
-  
   position: absolute;
   left: 0;
   right: 0;
@@ -101,6 +119,14 @@ export default defineComponent({
 #counter strong {
   font-size: 20px;
   line-height: 26px;
+}
+
+#logoImage {
+  position: absolute;
+  top: 10%;
+  left: 0;
+  right: 0;
+  text-align: center;
 }
 
 </style>
