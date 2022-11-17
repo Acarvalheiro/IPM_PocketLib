@@ -14,19 +14,24 @@
         </ion-toolbar>
       </ion-header>
     
-      <div class="title">
-        <strong>{{title}}</strong>
+      <div class="cover">
+        <img src="../download.jpeg" width="180" height="180">
       </div>
-      <div class="info">
-        <p><strong>Author: </strong> <br> {{author}}</p>
-        <p><strong>Publisher: </strong> <br> {{publisher}}</p>
-        <p><strong>Publish Date: </strong> <br> {{publish_date}}</p>
-      </div>
-      <div class="button">
-        <ion-button>Reserve</ion-button>
-      </div>
+        <div class="info">
+          <strong>{{title}}</strong>
+          <p><strong>Author: </strong> <br> {{author}}</p>
+          <p><strong>Publisher: </strong> <br> {{publisher}}</p>
+          <p><strong>Publish Date: </strong> <br> {{publish_date}}</p>
+          <ion-button class="button">Reserve</ion-button>
+        </div>
       <div class="synopse">
         <p>{{synopse}}</p>
+      </div>
+      <div class="review">
+        <strong>Reviews</strong>
+        <div v-for="review in reviews" :key="review" >
+            {{review.text}}
+        </div>
       </div>
     </ion-content>
   </ion-page>
@@ -55,14 +60,18 @@ export default defineComponent({
       isbn: '',
       publish_date: 'February 2069',
       synopse: 'parody, in literature, an imitation of the style and manner of a particular writer or school of writers. Parody is typically negative in intent',
-      reviews: [],
+      reviews: [
+        {
+          text: "book was very good. pls read",
+        },
+      ],
     }
   }},
 
-  mounted() {
-    //axios
-    //  .get(/*some api here, that transmits the data*/)
-  }
+  // mounted() {
+  //   axios
+  //     .get(some api here, that transmits the data)
+  // }
 
 
 });
@@ -75,21 +84,37 @@ export default defineComponent({
 }
 .title {
   text-align: center;
+  font-size: 40px;
   
-  position: absolute;
-  left: 60%;
-  top: 9%;
+  position: relative;
+  left: 10px;
+  top: 10px;
 
   font-size: 14px;
 }
+
+.cover {
+  position: relative;
+  align-items:baseline;
+
+  top: 5px;
+  left: 5px;
+
+  width: 49%;
+  float: left;
+}
+
+.title strong{
+  font-size: 20px;
+}
 .synopse {
-  text-align: center;
+  text-align: left;
   
-  position: absolute;
+  position: relative;
   left: 0;
   right: 0;
-  top: 50%;
-  transform: translateY(-50%);
+  top: 10px;
+  /* transform: translateY(-50%); */
 }
 
 .synopse strong {
@@ -111,18 +136,20 @@ export default defineComponent({
 }
 
 .button {
-  position: absolute;
-  left: 60%;
-  right: auto;
-  top: 30%;
+  position: relative;
 }
 
 .info {
-  position: absolute;
-  left: 60%;
+  margin-top: 10px;
+  position: relative;
+  left: 5px;
   right: 0;
-  top: 10%;
+  top: 5px;
 
+  width:49%;
+  float: right;
+
+  text-align: left;
   font-size: 14px;
 }
 
@@ -131,5 +158,15 @@ export default defineComponent({
   left: 5px;
   top: 5px;
 
+}
+
+.review{
+  
+  text-align: center;
+  font-size: 13px;
+
+  position:absolute;
+  top: 50%;
+  align-self:center;
 }
 </style>
