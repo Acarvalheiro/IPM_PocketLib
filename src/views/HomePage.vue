@@ -1,8 +1,13 @@
 <template>
-  <ion-page>
+
+  <MenuComponent/>
+
+  <ion-page id="main-component">
     <ion-header :translucent="true">
       <ion-toolbar>
-        <ion-title>Blank</ion-title>
+        <ion-buttons slot="start">
+          <ion-menu-button></ion-menu-button>
+        </ion-buttons>
       </ion-toolbar>
     </ion-header>
     
@@ -13,17 +18,28 @@
         </ion-toolbar>
       </ion-header>
     
-      <div id="container">
-        <strong>Ready to create an app?</strong>
-        <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
+      <div id="logoImage"> 
+        <img :src="require('@/assets/PocketLib.png')" >
+      </div>
+
+      <div class="container">
+        <SearchComponent/>
+      </div>
+      <div class="container" style="top: 75%;">
+        <ion-button @click="increment">Increment</ion-button>
       </div>
     </ion-content>
   </ion-page>
 </template>
 
 <script lang="ts">
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/vue';
-import { defineComponent } from 'vue';
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonButton, IonButtons, IonMenuButton, IonMenu } from '@ionic/vue';
+import { defineComponent, computed } from 'vue';
+import MenuComponent from '@/components/MenuComponent.vue'
+import SearchComponent from '@/components/SearchComponent.vue'
+import { setupConfig } from '@ionic/core';
+
+let num = 0;
 
 export default defineComponent({
   name: 'HomePage',
@@ -32,15 +48,39 @@ export default defineComponent({
     IonHeader,
     IonPage,
     IonTitle,
-    IonToolbar
+    IonToolbar,
+    IonButton,
+    IonButtons,
+    IonMenuButton,
+    MenuComponent,
+    SearchComponent
+  },
+
+  setup() {
+    const image = computed(() => require('@/assets/PocketLib.png'))
+    return {
+      image,
+    }
+  },
+
+  data() {{
+    return {
+      decimal: num,
+    }
+  }},
+
+  methods: {
+    increment(){
+      this.decimal++;
+    }
   }
+
 });
 </script>
 
 <style scoped>
-#container {
+.container {
   text-align: center;
-  
   position: absolute;
   left: 0;
   right: 0;
@@ -48,12 +88,13 @@ export default defineComponent({
   transform: translateY(-50%);
 }
 
-#container strong {
+
+.container strong {
   font-size: 20px;
   line-height: 26px;
 }
 
-#container p {
+.container p {
   font-size: 16px;
   line-height: 22px;
   
@@ -62,7 +103,30 @@ export default defineComponent({
   margin: 0;
 }
 
-#container a {
+.container a {
   text-decoration: none;
 }
+
+#counter {
+  text-align: center;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 75%;
+  transform: translateY(-50%);
+}
+
+#counter strong {
+  font-size: 20px;
+  line-height: 26px;
+}
+
+#logoImage {
+  position: absolute;
+  top: 10%;
+  left: 0;
+  right: 0;
+  text-align: center;
+}
+
 </style>
