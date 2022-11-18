@@ -1,40 +1,31 @@
 <template>
 
-  <MenuComponent/>
-
   <ion-page id="main-component">
-    <ion-header :translucent="true">
-      <ion-toolbar>
-        <ion-buttons slot="start">
-          <ion-menu-button></ion-menu-button>
-        </ion-buttons>
-      </ion-toolbar>
-    </ion-header>
-    
+
+
     <ion-content :fullscreen="true">
-      <ion-header collapse="condense">
-        <ion-toolbar>
-          <ion-title size="large">Blank</ion-title>
-        </ion-toolbar>
-      </ion-header>
-    
-      <div id="logoImage"> 
-        <img :src="require('@/assets/PocketLib.png')" >
+      <ToolbarComponent />
+
+      <div id="logoImage">
+        <img :src="require('@/assets/PocketLib.png')">
       </div>
 
       <div class="container">
         <SearchComponent/>
+      </div>
+      <div class="container" style="top: 75%;">
+        <ion-button @click="increment">Increment</ion-button>
       </div>
     </ion-content>
   </ion-page>
 </template>
 
 <script lang="ts">
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonButtons, IonMenuButton, IonMenu } from '@ionic/vue';
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonButtons, IonMenuButton } from '@ionic/vue';
 import { defineComponent, computed } from 'vue';
 import MenuComponent from '@/components/MenuComponent.vue'
 import SearchComponent from '@/components/SearchComponent.vue'
-import { setupConfig } from '@ionic/core';
+import ToolbarComponent from '@/components/Toolbar.vue'
 
 let num = 0;
 
@@ -49,7 +40,8 @@ export default defineComponent({
     IonButtons,
     IonMenuButton,
     MenuComponent,
-    SearchComponent
+    SearchComponent,
+    ToolbarComponent
   },
 
   setup() {
@@ -59,14 +51,16 @@ export default defineComponent({
     }
   },
 
-  data() {{
-    return {
-      decimal: num,
+  data() {
+    {
+      return {
+        decimal: num,
+      }
     }
-  }},
+  },
 
   methods: {
-    increment(){
+    increment() {
       this.decimal++;
     }
   }
@@ -93,9 +87,9 @@ export default defineComponent({
 .container p {
   font-size: 16px;
   line-height: 22px;
-  
+
   color: #8c8c8c;
-  
+
   margin: 0;
 }
 
@@ -124,5 +118,4 @@ export default defineComponent({
   right: 0;
   text-align: center;
 }
-
 </style>

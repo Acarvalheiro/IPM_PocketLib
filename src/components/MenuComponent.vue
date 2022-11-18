@@ -12,10 +12,9 @@
             Home
           </ion-button>
         </ion-item>
-        <ion-item>
-          <ion-button @click="() => router.push('/Profile')" class="button-native">  
-            Profile
-          </ion-button>
+        <ion-item >
+          <ion-icon name="person" slot="start"></ion-icon>
+          <router-link to="/profile"><ion-label>Profile</ion-label></router-link>
         </ion-item>
         <ion-item>
           <ion-button @click="() => router.push('/Books')" class="button-native">  
