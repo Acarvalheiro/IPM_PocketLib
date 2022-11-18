@@ -2,28 +2,23 @@
 
   <ion-page id="main-component">
 
-
     <ion-content :fullscreen="true">
-      <ToolbarComponent />
-
-      <div id="logoImage">
+      <ToolbarComponent/>
+      
+      <div class="container" id="logoImage">
         <img :src="require('@/assets/PocketLib.png')">
       </div>
 
       <div class="container">
         <SearchComponent/>
       </div>
-      <div class="container" style="top: 75%;">
-        <ion-button @click="increment">Increment</ion-button>
-      </div>
     </ion-content>
   </ion-page>
 </template>
 
 <script lang="ts">
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonButtons, IonMenuButton } from '@ionic/vue';
+import { IonContent, IonPage } from '@ionic/vue';
 import { defineComponent, computed } from 'vue';
-import MenuComponent from '@/components/MenuComponent.vue'
 import SearchComponent from '@/components/SearchComponent.vue'
 import ToolbarComponent from '@/components/Toolbar.vue'
 
@@ -33,13 +28,7 @@ export default defineComponent({
   name: 'HomePage',
   components: {
     IonContent,
-    IonHeader,
     IonPage,
-    IonTitle,
-    IonToolbar,
-    IonButtons,
-    IonMenuButton,
-    MenuComponent,
     SearchComponent,
     ToolbarComponent
   },
@@ -74,7 +63,7 @@ export default defineComponent({
   position: absolute;
   left: 0;
   right: 0;
-  top: 50%;
+  top: 60%;
   transform: translateY(-50%);
 }
 
@@ -113,9 +102,10 @@ export default defineComponent({
 
 #logoImage {
   position: absolute;
-  top: 10%;
+  top: 36%;
   left: 0;
   right: 0;
   text-align: center;
 }
+
 </style>
