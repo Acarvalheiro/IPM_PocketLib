@@ -10,6 +10,9 @@
                 <div class="profile_logo">                    
                     <img :src="require('@/assets/profile.png')" >
                 </div>
+                <div id="pocketLib_logo">                    
+                    <img :src="require('@/assets/PocketLib.png')" >
+                </div>
             </ion-toolbar>
         </ion-header>
     </ion-page>
@@ -50,6 +53,12 @@ export default defineComponent({
     scale: 0.3;
     float: right;
     position: relative;
+}
+
+#pocketLib_logo {
+    scale: 0.5;
+    margin: auto;
+    width: 50%;
 }
 
 ion-toolbar {
