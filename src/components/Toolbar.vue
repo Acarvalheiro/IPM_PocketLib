@@ -1,4 +1,5 @@
 <template>
+
     <MenuComponent />
 
     <ion-page id="main-component">
@@ -8,9 +9,9 @@
                     <ion-menu-button></ion-menu-button>
                 </ion-buttons>
                 <ion-title>Toolbar</ion-title>
-                <div class="profile_logo">                    
-                    <img :src="require('@/assets/profile.png')" >
-                </div>
+                <router-link to="/profile">
+                    <img :src="require('@/assets/profile.png')" width="25" height="25" class="profile_logo">
+                </router-link>
             </ion-toolbar>
         </ion-header>
     </ion-page>
@@ -18,7 +19,7 @@
 </template>
 
 <script lang="ts">
-import { IonHeader, IonPage, IonTitle, IonToolbar, IonButtons} from '@ionic/vue';
+import { IonHeader, IonPage, IonTitle, IonToolbar, IonButtons } from '@ionic/vue';
 import { defineComponent, computed } from 'vue';
 import MenuComponent from '@/components/MenuComponent.vue'
 
@@ -34,20 +35,18 @@ export default defineComponent({
         MenuComponent,
     },
     setup() {
-    const image = computed(() => require('@/assets/profile.png'))
-    return {
-      image,
-    }
-  },
+        const image = computed(() => require('@/assets/profile.png'))
+        return {
+            image,
+        }
+    },
 });
 
 </script>
 <style>
-
-.profile_logo{
-    align-self: right;
-    margin-top: 5px;
-    margin-right: 5px;
+.profile_logo {
+    position: absolute;
+    right: 10px;
+    top: 15px;
 }
-
 </style>

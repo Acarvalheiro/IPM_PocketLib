@@ -1,8 +1,6 @@
 <template>
 
   <ion-page id="main-component">
-
-
     <ion-content :fullscreen="true">
       <ToolbarComponent />
 
@@ -21,9 +19,8 @@
 </template>
 
 <script lang="ts">
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonButton, IonButtons, IonMenuButton } from '@ionic/vue';
+import { IonContent, IonPage, IonButton } from '@ionic/vue';
 import { defineComponent, computed } from 'vue';
-import MenuComponent from '@/components/MenuComponent.vue'
 import SearchComponent from '@/components/SearchComponent.vue'
 import ToolbarComponent from '@/components/Toolbar.vue'
 
@@ -33,14 +30,8 @@ export default defineComponent({
   name: 'HomePage',
   components: {
     IonContent,
-    IonHeader,
     IonPage,
-    IonTitle,
-    IonToolbar,
     IonButton,
-    IonButtons,
-    IonMenuButton,
-    MenuComponent,
     SearchComponent,
     ToolbarComponent
   },

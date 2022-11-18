@@ -1,10 +1,8 @@
 <template>
     <ion-content>
-        <ion-header :translucent="true">
-            <ion-toolbar>
-            <ion-title>Blank</ion-title>
-            </ion-toolbar>
-        </ion-header>
+        
+        <ToolbarComponent />
+        
         <ion-card class="profile-header">
             <div class="button-wrapper">
                 <ion-button fill="clear" @click="editingUserName = !editingUserName">Edit</ion-button>
@@ -49,24 +47,23 @@
 </template>
   
 <script lang="ts">
-    import { IonAvatar, IonTitle, IonToolbar, IonHeader, IonCard, IonButton, IonIcon, IonContent, IonItem, IonInput } from '@ionic/vue';
+    import { IonAvatar, IonCard, IonButton, IonIcon, IonContent, IonItem, IonInput } from '@ionic/vue';
     import { addIcons } from 'ionicons';
     import { personOutline, starOutline } from 'ionicons/icons';
     import { defineComponent } from 'vue';
+    import ToolbarComponent from '@/components/Toolbar.vue'
   
   export default defineComponent({
     name: 'UserProfile',
     components: {
         IonAvatar, 
-        IonTitle,
-        IonToolbar,
-        IonHeader,
         IonCard,
         IonButton,
         IonIcon,
         IonContent,
         IonItem,
-        IonInput
+        IonInput,
+        ToolbarComponent
     },
 
     data() {
