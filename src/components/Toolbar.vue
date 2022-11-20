@@ -7,12 +7,10 @@
                 <ion-buttons slot="start">
                     <ion-menu-button></ion-menu-button>
                 </ion-buttons>
-                <div class="profile_logo">                    
-                    <img :src="require('@/assets/profile.png')" >
-                </div>
-                <div id="pocketLib_logo">                    
-                    <img :src="require('@/assets/PocketLib.png')" >
-                </div>
+                <ion-title>Toolbar</ion-title>
+                <router-link to="/profile">
+                    <img :src="require('@/assets/profile.png')" width="25" height="25" class="profile_logo">
+                </router-link>
             </ion-toolbar>
         </ion-header>
     </ion-page>
@@ -20,7 +18,7 @@
 </template>
 
 <script lang="ts">
-import { IonHeader, IonPage, IonToolbar, IonButtons, IonMenuButton} from '@ionic/vue';
+import { IonHeader, IonPage, IonTitle, IonToolbar, IonButtons } from '@ionic/vue';
 import { defineComponent, computed } from 'vue';
 import MenuComponent from '@/components/MenuComponent.vue'
 
@@ -32,15 +30,14 @@ export default defineComponent({
         IonPage,
         IonToolbar,
         IonButtons,
-        MenuComponent,
-        IonMenuButton
+        MenuComponent
     },
     setup() {
-    const image = computed(() => require('@/assets/profile.png'))
-    return {
-      image,
-    }
-  },
+        const image = computed(() => require('@/assets/profile.png'))
+        return {
+            image,
+        }
+    },
 });
 
 </script>
@@ -79,5 +76,4 @@ ion-toolbar {
     box-sizing: border-box;
     height: 120px;
 }
-
 </style>

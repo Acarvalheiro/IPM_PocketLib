@@ -1,7 +1,6 @@
 <template>
 
   <ion-page id="main-component">
-
     <ion-content :fullscreen="true">
       <ToolbarComponent/>
       
