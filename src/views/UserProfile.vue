@@ -1,57 +1,57 @@
 <template>
-    <ion-content>
-        
-        <ToolbarComponent />
-        
-        <ion-card class="profile-header">
-            <div class="button-wrapper">
-                <ion-button fill="clear" @click="editingUserName = !editingUserName">Edit</ion-button>
-            </div>
-            <div>
-                <ion-avatar>
-                    <img alt="Silhouette of a person's head" :src="image" />
-                </ion-avatar>
-                <p :class="{hidden: editingUserName}">{{userName}}</p>
-                <ion-item :class="{hidden: !editingUserName}">
-                    <ion-input :value="userName" v-model="userName"></ion-input>
-                </ion-item>
-            </div>
-        </ion-card>
-        <ion-card class="info-wrapper">
-            <div class="edit-row">
-                <ion-icon name="person-outline" size="large"></ion-icon>
-                <ion-button fill="clear" @click="editingInfo = !editingInfo">Edit</ion-button>
-            </div>
-            <div class="info-row" v-for="elem in information" v-bind:key="elem.label">
-                <p>{{elem.label}}:</p>
-                <p :class="{hidden: editingInfo}">{{elem.content}}</p>
-                <ion-item :class="{hidden: !editingInfo}">
-                    <ion-input :value="elem.content" v-model="elem.content"></ion-input>
-                </ion-item>
-            </div>
-        </ion-card>
-        <ion-card class="info-wrapper">
-            <div class="edit-row">
-                <ion-icon name="star-outline" size="large"></ion-icon>
-                <ion-button fill="clear" @click="editingPreferences = !editingPreferences">Edit</ion-button>
-            </div>
-            <div class="info-row" v-for="elem in preferences" v-bind:key="elem.label">
-                <p>{{elem.label}}:</p>
-                <p :class="{hidden: editingPreferences}">{{elem.content}}</p>
-                <ion-item :class="{hidden: !editingPreferences}">
-                    <ion-input :value="elem.content" v-model="elem.content"></ion-input>
-                </ion-item>
-            </div>
-        </ion-card>
-    </ion-content>
+    <ion-page id="main-component">
+        <ion-content>
+            <!-- <ToolbarComponent /> -->
+            <ion-card class="profile-header">
+                <div class="button-wrapper">
+                    <ion-button fill="clear" @click="editingUserName = !editingUserName">Edit</ion-button>
+                </div>
+                <div>
+                    <ion-avatar>
+                        <img alt="Silhouette of a person's head" :src="image" />
+                    </ion-avatar>
+                    <p :class="{hidden: editingUserName}">{{userName}}</p>
+                    <ion-item :class="{hidden: !editingUserName}">
+                        <ion-input :value="userName" v-model="userName"></ion-input>
+                    </ion-item>
+                </div>
+            </ion-card>
+            <ion-card class="info-wrapper">
+                <div class="edit-row">
+                    <ion-icon name="person-outline" size="large"></ion-icon>
+                    <ion-button fill="clear" @click="editingInfo = !editingInfo">Edit</ion-button>
+                </div>
+                <div class="info-row" v-for="elem in information" v-bind:key="elem.label">
+                    <p>{{elem.label}}:</p>
+                    <p :class="{hidden: editingInfo}">{{elem.content}}</p>
+                    <ion-item :class="{hidden: !editingInfo}">
+                        <ion-input :value="elem.content" v-model="elem.content"></ion-input>
+                    </ion-item>
+                </div>
+            </ion-card>
+            <ion-card class="info-wrapper">
+                <div class="edit-row">
+                    <ion-icon name="star-outline" size="large"></ion-icon>
+                    <ion-button fill="clear" @click="editingPreferences = !editingPreferences">Edit</ion-button>
+                </div>
+                <div class="info-row" v-for="elem in preferences" v-bind:key="elem.label">
+                    <p>{{elem.label}}:</p>
+                    <p :class="{hidden: editingPreferences}">{{elem.content}}</p>
+                    <ion-item :class="{hidden: !editingPreferences}">
+                        <ion-input :value="elem.content" v-model="elem.content"></ion-input>
+                    </ion-item>
+                </div>
+            </ion-card>
+        </ion-content>
+    </ion-page>
 </template>
   
 <script lang="ts">
-    import { IonAvatar, IonCard, IonButton, IonIcon, IonContent, IonItem, IonInput } from '@ionic/vue';
+    import { IonAvatar, IonCard, IonButton, IonIcon, IonContent, IonItem, IonInput, IonPage } from '@ionic/vue';
     import { addIcons } from 'ionicons';
     import { personOutline, starOutline } from 'ionicons/icons';
     import { defineComponent } from 'vue';
-    import ToolbarComponent from '@/components/Toolbar.vue'
+    //import ToolbarComponent from '@/components/Toolbar.vue'
   
   export default defineComponent({
     name: 'UserProfile',
@@ -63,7 +63,8 @@
         IonContent,
         IonItem,
         IonInput,
-        ToolbarComponent
+        //ToolbarComponent,
+        IonPage
     },
 
     data() {

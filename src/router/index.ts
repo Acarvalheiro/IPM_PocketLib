@@ -3,6 +3,10 @@ import { RouteRecordRaw } from 'vue-router';
 import HomePage from '../views/HomePage.vue'
 import UserProfile from '../views/UserProfile.vue'
 import BookPage from '../views/BookPage.vue'
+import BookSearch from '../views/BookSearch.vue'
+import ReservedBooks from '../views/ReservedBooks.vue'
+import MyReadLists from '../views/MyReadLists.vue'
+import BooksInList from '../views/BooksInList.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -23,6 +27,26 @@ const routes: Array<RouteRecordRaw> = [
     path: '/book',
     name: 'Book',
     component: BookPage
+  },
+  {
+    path: '/search',
+    name: 'Search',
+    component: BookSearch
+  },
+  {
+    path: '/reserved',
+    name: 'Reserved',
+    component: ReservedBooks
+  },
+  {
+    path: '/myreadlists',
+    name: 'MyReadLists',
+    component: MyReadLists
+  },
+  {
+    path: '/readlist',
+    name: 'ReadList',
+    component: BooksInList
   }
 ]
 
