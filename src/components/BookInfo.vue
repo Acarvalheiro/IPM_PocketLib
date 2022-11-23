@@ -1,5 +1,5 @@
 <template>
-    <div class="book-info-wrapper">
+    <div class="book-info-wrapper" v-show="show">
         <img :src="require(`@/assets/${image}`)" alt="image" @click="() => router.push('/book')"/>
         <div class="text-wrapper">
             <h3 @click="() => router.push('/book')">{{title}}</h3>
@@ -14,7 +14,7 @@
                     </ion-select>
                 </ion-item>
             </ion-list>
-            <ion-button size="small" color="danger" v-show="inList">
+            <ion-button size="small" color="danger" v-show="inList" @click="$emit('removeEvent')">
                 <span>
                     Remove
                     <ion-icon name="close-outline" size="small"></ion-icon>
@@ -55,6 +55,11 @@ export default defineComponent({
             type: Boolean,
             required: false,
             default: false
+        },
+        show: {
+            type: Boolean,
+            required: false,
+            default: true
         }
     },
     data() {
@@ -71,6 +76,7 @@ export default defineComponent({
       const router = useRouter();
       return { router };
     },
+    emits: ['removeEvent'],
     methods: {
         onChange(event) {
             if(event.target.value == 0) {
@@ -78,7 +84,7 @@ export default defineComponent({
             } else {
                 this.addedTo = "Added to readlist"
             }
-        }
+        },
     }
 })
 </script>

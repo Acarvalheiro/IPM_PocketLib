@@ -1,6 +1,7 @@
 <template>
-    <book-info v-for="book in books" v-bind:key="book.title" 
-    :title="book.title" :author="book.author" :image="book.image" :inList="inList" :readLists="readLists"></book-info>
+    <book-info :id="book.title" v-for="book in books" v-bind:key="book.title" @removeEvent="$emit('removeEvent', book.title)"
+    :title="book.title" :author="book.author" :image="book.image" :inList="inList" :readLists="readLists" :show="book.show">
+    </book-info>
 </template>
 
 <script>
@@ -19,16 +20,14 @@ export default defineComponent({
         },
         readLists: {
             type: Array,
-            required: true
+            required: false
         },
         inList: {
             type: Boolean,
             required: false,
             default: false
         }
-    }
+    },
+    emits: ['removeEvent']
 })
 </script>
-<style scoped>
-
-</style>

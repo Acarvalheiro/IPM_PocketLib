@@ -6,7 +6,7 @@
                 <h4>Your reservations</h4>
                 <ion-list class="reservation-type">
                     <ion-item>
-                        <ion-select interface="popover" placeholder="Reserved">
+                        <ion-select interface="popover" placeholder="All" @ion-change="onChange($event)">
                             <ion-select-option v-for="elem in statusOptions" v-bind:key="elem" :value="elem">
                                 {{elem}}
                             </ion-select-option>
@@ -21,26 +21,37 @@
 
 <script>
 import { defineComponent } from 'vue'
-import { IonContent, IonPage } from '@ionic/vue';
+import { IonContent, IonPage, IonList, IonItem, IonSelect, IonSelectOption } from '@ionic/vue';
 import BookList from '@/components/BookList.vue'
 //import ToolbarComponent from '@/components/Toolbar.vue'
 
 export default defineComponent({
     name: "ReservedBooks",
-    components: { BookList, IonContent, IonPage },
+    components: { BookList, IonContent, IonPage, IonList, IonItem, IonSelect, IonSelectOption },
     data() {
         return {
             books:
                 [
-                    {title: "Clean Code", author: "Goulão", image: "clean-code.jpg"},
-                    {title: "Clean Code", author: "Goulão", image: "clean-code.jpg"},
-                    {title: "Clean Code", author: "Goulão", image: "clean-code.jpg"},
-                    {title: "Clean Code", author: "Goulão", image: "clean-code.jpg"},
-                    {title: "Clean Code", author: "Goulão", image: "clean-code.jpg"}
+                    {title: "Clean Code", author: "Goulão", image: "clean-code.jpg", status: "Picked Up", show: true},
+                    {title: "Clean Code", author: "Goulão", image: "clean-code.jpg", status: "Picked Up", show: true},
+                    {title: "Bad Code", author: "Goulão", image: "clean-code.jpg", status: "Waiting Pick Up", show: true},
+                    {title: "Mid Code", author: "Goulão", image: "clean-code.jpg", status: "Waiting Pick Up", show: true},
+                    {title: "Clean Code", author: "Goulão", image: "clean-code.jpg", status: "Picked Up", show: true}
                 ],
             readLists: ["Fav Books", "Uni Books", "Future Reads"],
-            statusOptions: ["Picked Up", "Waiting pick up"],
-            status: ""
+            statusOptions: ["All", "Picked Up", "Waiting Pick Up"],
+            filterOption: "All"
+        }
+    },
+    methods: {
+        onChange(event){
+            this.filterOption = event.target.value;
+            this.setShow(); 
+        },
+        setShow(){
+            this.books.forEach(book => {
+                book.show = this.filterOption.toUpperCase() === book.status.toUpperCase() || this.filterOption === "All";
+            });
         }
     }
 })
