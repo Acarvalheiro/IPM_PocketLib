@@ -7,6 +7,8 @@ import BookSearch from '../views/BookSearch.vue'
 import ReservedBooks from '../views/ReservedBooks.vue'
 import MyReadLists from '../views/MyReadLists.vue'
 import BooksInList from '../views/BooksInList.vue'
+import LogInPage from '../views/UserLoginPage.vue'
+import CreateAccountPage from '../views/CreateAccountPage.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -47,6 +49,16 @@ const routes: Array<RouteRecordRaw> = [
     path: '/readlist',
     name: 'ReadList',
     component: BooksInList
+  },
+  {
+    path: '/login',
+    name: 'LogInPage',
+    component: LogInPage
+  },
+  {
+    path: '/create',
+    name: 'CreateAccount',
+    component: CreateAccountPage
   }
 ]
 
