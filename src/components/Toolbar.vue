@@ -1,10 +1,9 @@
 <template>
 
     <MenuComponent />
-    <ion-page id="main-component">
         <ion-header :translucent="true">
             <ion-toolbar>
-                <ion-buttons slot="start">
+                <ion-buttons>
                     <ion-menu-button></ion-menu-button>
                 </ion-buttons>
                 <ion-title>Toolbar</ion-title>
@@ -13,12 +12,12 @@
                 </router-link>
             </ion-toolbar>
         </ion-header>
-    </ion-page>
+   
 
 </template>
 
 <script lang="ts">
-import { IonHeader, IonPage, IonTitle, IonToolbar, IonButtons } from '@ionic/vue';
+import { IonHeader, IonTitle, IonToolbar, IonButtons } from '@ionic/vue';
 import { defineComponent, computed } from 'vue';
 import MenuComponent from '@/components/MenuComponent.vue'
 
@@ -27,7 +26,6 @@ export default defineComponent({
     name: 'ToolbarComponent',
     components: {
         IonHeader,
-        IonPage,
         IonToolbar,
         IonButtons,
         MenuComponent
