@@ -30,7 +30,7 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 /* import specific icons */
-import { faXmark,  } from '@fortawesome/free-solid-svg-icons'
+import { faXmark  } from '@fortawesome/free-solid-svg-icons'
 
 import 'aos/dist/aos.css'
 
