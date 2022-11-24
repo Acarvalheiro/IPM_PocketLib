@@ -34,6 +34,9 @@ import { faXmark  } from '@fortawesome/free-solid-svg-icons'
 
 import 'aos/dist/aos.css'
 
+import { VueFire} from 'vuefire'
+import { firebaseApp } from './firebase'
+
 /* add icons to the library */
 library.add(faXmark)
 
@@ -42,6 +45,12 @@ const app = createApp(App)
   .use(router)
   .component('font-awesome-icon', FontAwesomeIcon)
   
+  app
+  .use(VueFire, {
+    // imported above but could also just be created here
+    firebaseApp,
+  })
+
 router.isReady().then(() => {
   app.mount('#app');
 });

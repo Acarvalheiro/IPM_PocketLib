@@ -52,7 +52,7 @@
                                             <font-awesome-icon @click="this.closeMessage()" icon=" fa-xmark" />
                                         </div>
                                     </div>
-                                    <ion-button @click="openRequestMessage" color="success">
+                                    <ion-button @click="addToDB" color="success">
                                         Confirm
                                     </ion-button>
                                 </div>
@@ -62,7 +62,9 @@
 
                 </div>
             </div>
-
+            <div v-for="livro in todos" :key="livro.id">
+                {{livro.title}}
+            </div>
         </ion-content>
     </ion-page>
 </template>
@@ -71,6 +73,9 @@ import { IonContent, IonPage, IonButton, IonIcon } from '@ionic/vue';
 import { defineComponent, onMounted } from 'vue';
 import ToolbarComponent from '@/components/Toolbar.vue'
 import { homeOutline, mailOutline, callOutline, librarySharp } from 'ionicons/icons';
+import { useFirestore } from 'vuefire'
+import { useCollection } from 'vuefire'
+import { collection, addDoc } from 'firebase/firestore'
 
 
 let num = 0;
@@ -87,6 +92,7 @@ export default defineComponent({
     },
     data() {
         return {
+            booksDatabase: null,
             livro: "livro1",
             libraries: [{
                 name: "Livraria1",
@@ -159,7 +165,15 @@ export default defineComponent({
             this.reserveMessage = false
             this.notificationMessage = false
             this.requestMessage = false
+        },
+
+        addToDB(){
+            console.log(this.test)
+           addDoc(this.test,{
+            "title":"livroTeste"
+           })
         }
+        
 
     },
     mounted() {
@@ -173,7 +187,10 @@ export default defineComponent({
         console.log(this.regions)
     },
     setup() {
-        return { homeOutline, mailOutline, callOutline }
+        const db = useFirestore()
+        const test = collection(db,'books')
+        const database = useCollection(collection(db, 'books'))
+        return { homeOutline, mailOutline, callOutline, database,db,test}
     },
 
 
