@@ -1,40 +1,44 @@
 <template>
-  <div id="show_filtered_books">
-    <input type="text" v-model="search" placeholder="Search books"/>
-    <div v-for="book in filteredBooks" :key="book.id" class="single-book">
-      <h2>{{book.id}} {{book.name}}</h2>
-    </div>
-  </div>
+
+  <ion-searchbar inputmode="text" @ionInput="handleChange($event)" placeholder="Search books" value=""></ion-searchbar>
+
+  <ion-list>
+    <ion-item v-for="result in results" :key=result.title>
+      <ion-label>
+        <p>{{ result.title }}</p>
+        {{ result.title }} {{ result.author }}
+      </ion-label>
+    </ion-item>
+  </ion-list>
 </template>
-    
+
 <script lang="ts">
+import { IonItem, IonList, IonSearchbar, IonLabel, IonInput } from '@ionic/vue';
+  import { defineComponent, ref } from 'vue';
 
-import {} from '@ionic/vue';
-import { defineComponent } from 'vue';
+  export default defineComponent({
+    components: { IonItem, IonList, IonSearchbar, IonLabel },
 
-export default defineComponent({
-  name: 'SearchComponent',
-  components: {},
-  data() {
-    return {
-      books: [
-        { id: 1, name: "Foo" },
-        { id: 2, name: "Bar" },
-        { id: 3, name: "Baz" },
-        { id: 4, name: "Foobar" }
-      ],
-      search: ""
-    };
-  },
+    setup() {
+      const books = [{title: "Clean Code1", author: "Goulão", image: "clean-code.jpg"},
+                    {title: "A", author: "Goulão", image: "clean-code.jpg"},
+                    {title: "Clean Code3", author: "Goulão", image: "clean-code.jpg"}];
 
-  computed: {
-    filteredBooks: function() {
-      return this.books.filter((book) => {
-        return book.name.match(this.search);
-      })
-    }
-  }
+      const results = ref([{title: "", author: "", image: ""}]);
 
-});
+      
+      return { books, results };
+    },
 
+
+    methods: {
+      handleChange(event) {
+        const query = event.target.value.toLowerCase();
+
+        this.results = this.books.filter((book) => {
+          return (book.title.toLowerCase().indexOf(query) > -1 && query != "");
+        })
+      },
+    },
+  });
 </script>

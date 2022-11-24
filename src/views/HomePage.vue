@@ -1,15 +1,24 @@
 <template>
 
+  <MenuComponent/>
   <ion-page id="main-component">
-    <ion-content :fullscreen="true">
       <ToolbarComponent/>
-      
-      <div class="container" id="logoImage">
-        <img :src="require('@/assets/PocketLib.png')">
+      <ion-content :fullscreen="true">
+        <div class="wrapper">
+          <div class="container" id="logoImage">
+            <img :src="require('@/assets/PocketLib.png')">
+          
+        <div class="container1">
+          <SearchComponent/>
+          <div class="container2">
+            <ReadListSelectorComp/>
+            <div class="container3">
+              <HorizBookList/>
+            </div>
+          </div>
+        </div>
+        
       </div>
-
-      <div class="container">
-        <SearchComponent/>
       </div>
     </ion-content>
   </ion-page>
@@ -20,6 +29,10 @@ import { IonContent, IonPage } from '@ionic/vue';
 import { defineComponent, computed } from 'vue';
 import SearchComponent from '@/components/SearchComponent.vue'
 import ToolbarComponent from '@/components/Toolbar.vue'
+import MenuComponent from '@/components/MenuComponent.vue'
+import ReadListSelectorComp from '@/components/ReadListSelector.vue'
+import HorizBookList from '@/components/HorizBookList.vue'
+
 
 let num = 0;
 
@@ -29,7 +42,10 @@ export default defineComponent({
     IonContent,
     IonPage,
     SearchComponent,
-    ToolbarComponent
+    ToolbarComponent,
+    MenuComponent,
+    ReadListSelectorComp, 
+    HorizBookList
   },
 
   setup() {
@@ -101,10 +117,34 @@ export default defineComponent({
 
 #logoImage {
   position: absolute;
-  top: 36%;
   left: 0;
   right: 0;
-  text-align: center;
 }
+
+.wrapper {
+  position: relative;
+  width: auto;
+  height: 200px;
+  }
+
+.container1 {
+  position: absolute;
+  right: 0;
+  left: 0;
+}
+
+.container2 {
+  position: absolute;
+    left: 170px;
+    width: fit-content;
+}
+
+.container3 {
+  position: absolute;
+    left: -60px;
+    top: 130%;
+}
+
+
 
 </style>
