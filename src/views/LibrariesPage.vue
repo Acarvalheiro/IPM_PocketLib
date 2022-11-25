@@ -113,7 +113,7 @@ export default defineComponent({
         return {
             regionsShow: "All",
             livro: "Way of Kings",
-            regions :[],
+            regions : [] as any[],
             reserveMessage: false,
             notificationMessage: false,
             requestMessage: false
@@ -194,14 +194,12 @@ export default defineComponent({
     mounted() {
 
         this.checkAvailability('Way of Kings');
-        const regions = this.libraries.reduce((group, library) => {
+        this.regions = this.libraries.reduce((group, library) => {
             const { region } = library;
             group[region] = group[region] ?? [];
             group[region].push(library);
             return group;
-        }, {});
-        return regions;
-        
+        }, {}) as any[];
     }
 
 
