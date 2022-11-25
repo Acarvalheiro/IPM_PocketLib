@@ -1,75 +1,91 @@
 <template>
-    <ion-page id="main-component">
+    <ion-page>
         <ion-content>
             <ToolbarComponent />
+            <ion-list class="reservation-type">
+                <ion-item>
+                    <ion-select interface="popover" placeholder="Select Region" @ion-change="onChange($event)">
+                        <ion-select-option>All</ion-select-option>
+                        <ion-select-option v-for="(regionName, regionId) in regions" v-bind:key="regionId">
+                            {{ regionId }}
+                        </ion-select-option>
+                    </ion-select>
+
+                </ion-item>
+            </ion-list>
             <div class="library-list">
-                <div class="library-search-bar"></div>
                 <div v-for="(region, regionID) in regions" v-bind:key="region" class="region-block">
-                    <h2 class="region-name">{{ regionID }}</h2>
-                    <div v-for="library in region" v-bind:key="library.name" class="library">
-                        <h3 class="library-name">{{ library.name }}</h3>
-                        <div class="library-info">
-                            <div class="info-field">
-                                <ion-icon :icon="homeOutline"></ion-icon>
-                                <p>{{ library.address }}</p>
-                            </div>
-                            <div class="info-field">
-                                <ion-icon :icon="callOutline"></ion-icon>
-                                <p>{{ library.phone }}</p>
-                            </div>
-                            <div class="info-field">
-                                <ion-icon :icon="mailOutline"></ion-icon>
-                                <p>{{ library.email }}</p>
-                            </div>
-                        </div>
-                        <ion-button @click="this.openMessage(library)"
-                            v-bind:color="(library.availability == 'Available') ? 'success' : (library.availability == 'Borrowed') ? 'warning' : 'danger'">
-                            {{ library.availability }}
-                        </ion-button>
-                        <Transition>
-                            <div v-if="reserveMessage || notificationMessage || requestMessage" class="message">
-                                <div class="message-wrapper">
-                                    <div v-if="reserveMessage" class="message-text">
-                                        <div class="message-title">
-                                            <h4> Confirm reservation details</h4>
-                                            <font-awesome-icon @click="this.closeMessage()" icon=" fa-xmark" />
-                                        </div>
-                                        <p>Book: {{ livro }}</p>
-                                        <p>Library: {{ library.name }}</p>
-                                        <p>User: ambrosio</p>
-                                    </div>
-                                    <div v-if="notificationMessage" class="message-text">
-                                        <div class="message-title">
-                                            <h4>Do you want to be notified when this book becomes available again?</h4>
-                                            <font-awesome-icon @click="this.closeMessage()" icon=" fa-xmark" />
-                                        </div>
-                                    </div>
-                                    <div v-if="requestMessage" class="message-text">
-                                        <div class="message-title">
-                                            <h4>The selected book is currently unavailable at this library. <br> Do you
-                                                wish
-                                                to request it?</h4>
-                                            <font-awesome-icon @click="this.closeMessage()" icon=" fa-xmark" />
-                                        </div>
-                                    </div>
-                                    <ion-button @click="addToDB" color="success">
-                                        Confirm
-                                    </ion-button>
+                    <div class="region-libraries" v-if="(regionsShow == regionID || regionsShow == 'All')">
+                        <h2 class="region-name">{{ regionID }}</h2>
+                        <div v-for="library in region" v-bind:key="library.name" class="library">
+                            <h3 class="library-name">{{ library.name }}</h3>
+                            <div class="library-info">
+                                <div class="info-field">
+                                    <ion-icon :icon="homeOutline"></ion-icon>
+                                    <p>{{ library.address }}</p>
+                                </div>
+                                <div class="info-field">
+                                    <ion-icon :icon="callOutline"></ion-icon>
+                                    <p>{{ library.phone }}</p>
+                                </div>
+                                <div class="info-field">
+                                    <ion-icon :icon="mailOutline"></ion-icon>
+                                    <p>{{ library.email }}</p>
                                 </div>
                             </div>
-                        </Transition>
+                            <ion-button @click="this.openMessage(library)"
+                                v-bind:color="(library.availability == 'Available') ? 'success' : (library.availability == 'Borrowed') ? 'warning' : 'danger'">
+                                {{ library.availability }}
+                            </ion-button>
+                            <Transition>
+                                <div v-if="reserveMessage || notificationMessage || requestMessage" class="message">
+                                    <div class="message-wrapper">
+                                        <div v-if="reserveMessage" class="message-text">
+                                            <div class="message-title">
+                                                <h4> Confirm reservation details</h4>
+                                                <font-awesome-icon @click="this.closeMessage()" icon=" fa-xmark" />
+                                            </div>
+                                            <p>Book: {{ livro }}</p>
+                                            <p>Library: {{ library.name }}</p>
+                                            <p>User: ambrosio</p>
+                                        </div>
+                                        <div v-if="notificationMessage" class="message-text">
+                                            <div class="message-title">
+                                                <h4>Do you want to be notified when this book becomes available again?
+                                                </h4>
+                                                <font-awesome-icon @click="this.closeMessage()" icon=" fa-xmark" />
+                                            </div>
+                                        </div>
+                                        <div v-if="requestMessage" class="message-text">
+                                            <div class="message-title">
+                                                <h4>The selected book is currently unavailable at this library. <br> Do
+                                                    you
+                                                    wish
+                                                    to request it?</h4>
+                                                <font-awesome-icon @click="this.closeMessage()" icon=" fa-xmark" />
+                                            </div>
+                                        </div>
+                                        <ion-button @click="addToDB" color="success">
+                                            Confirm
+                                        </ion-button>
+                                    </div>
+                                </div>
+                            </Transition>
+                        </div>
                     </div>
 
                 </div>
-            </div>
-            <div v-for="livro in todos" :key="livro.id">
-                {{livro.title}}
             </div>
         </ion-content>
     </ion-page>
 </template>
 <script>
-import { IonContent, IonPage, IonButton, IonIcon } from '@ionic/vue';
+import {
+    IonContent, IonPage, IonButton, IonList,
+    IonItem,
+    IonSelect,
+    IonSelectOption,
+} from '@ionic/vue';
 import { defineComponent, onMounted } from 'vue';
 import ToolbarComponent from '@/components/Toolbar.vue'
 import { homeOutline, mailOutline, callOutline, librarySharp } from 'ionicons/icons';
@@ -81,49 +97,22 @@ import { collection, addDoc } from 'firebase/firestore'
 let num = 0;
 
 export default defineComponent({
+
     name: 'LibrariesPage',
     components: {
         IonContent,
         IonPage,
         ToolbarComponent,
         IonButton,
-        IonIcon
-
+        IonList,
+        IonItem,
+        IonSelect,
+        IonSelectOption,
     },
     data() {
         return {
-            booksDatabase: null,
-            livro: "livro1",
-            libraries: [{
-                name: "Livraria1",
-                region: "Lisboa",
-                address: "rua liboa",
-                email: "emailLisboa",
-                phone: "922357329",
-                available: ["livro1", "livro3"],
-                borrowed: ["anen", "livro7"],
-                availability: "Unavailable"
-            }, {
-                name: "Livraria2",
-                region: "Porto",
-                address: "rua liboa",
-                email: "emailLisboa",
-                phone: "922357329",
-                available: ["livro2", "livro3"],
-                borrowed: ["anen", "livro7"],
-                availability: "Unavailable"
-            },
-            {
-                name: "Livraria1",
-                region: "Lisboa",
-                address: "rua liboa",
-                email: "emailLisboa",
-                phone: "922357329",
-                available: ["livro2", "livro3"],
-                borrowed: ["livro1", "livro7"],
-                availability: "Unavailable"
-            }
-            ],
+            regionsShow: "All",
+            livro: "Way of Kings",
             regions: [],
             reserveMessage: false,
             notificationMessage: false,
@@ -131,11 +120,18 @@ export default defineComponent({
         }
     },
     methods: {
+        onChange(event) {
+            console.log(event.target.value)
+            this.regionsShow = event.target.value;
+        },
+
         checkAvailability(book) {
+
             this.libraries.forEach(lib => {
                 let availableBooks = lib.available;
                 let borrowedBooks = lib.borrowed;
                 availableBooks.every(element => {
+                   
                     if (element == book) {
                         lib.availability = "Available"
                         return false;
@@ -147,6 +143,9 @@ export default defineComponent({
                         return false;
                     }
                 });
+                if (lib.availability == "") {
+                    lib.availability = "Unavailable"
+                }
             });
         },
         openMessage(library) {
@@ -167,31 +166,41 @@ export default defineComponent({
             this.requestMessage = false
         },
 
-        addToDB(){
+        addToDB() {
             console.log(this.test)
-           addDoc(this.test,{
-            "title":"livroTeste"
-           })
+            addDoc(this.test, {
+                "name": "Biblioteca do Porto",
+                "address": "R. de Dom João IV 2, 4000-296 Porto",
+                "availability": "",
+                "email": "biblioalcporto@gmail.com",
+                "available": [],
+                "borrowed": [],
+                "region": "Porto",
+                "phone": "939245874"
+            })
         }
-        
+
 
     },
+
+    setup() {
+        const db = useFirestore()
+        const test = collection(db, 'libraries')
+        const libraries = useCollection(collection(db, 'libraries'))
+
+        return { homeOutline, mailOutline, callOutline, libraries, db, test }
+    },
+
     mounted() {
-        this.checkAvailability('livro1');
+
+        this.checkAvailability('Way of Kings');
         this.regions = this.libraries.reduce((group, library) => {
             const { region } = library;
             group[region] = group[region] ?? [];
             group[region].push(library);
             return group;
         }, {});
-        console.log(this.regions)
-    },
-    setup() {
-        const db = useFirestore()
-        const test = collection(db,'books')
-        const database = useCollection(collection(db, 'books'))
-        return { homeOutline, mailOutline, callOutline, database,db,test}
-    },
+    }
 
 
 });
@@ -222,7 +231,6 @@ h3 {
     font-weight: 600;
     height: 10vh;
     border-bottom-style: solid;
-    border-top-style: solid;
     border-width: 2px;
 }
 
@@ -234,26 +242,33 @@ h3 {
     padding: 0 30px 20px;
 }
 
+.library-list .region-block .library:last-child {
+    border-width: 2px;
+}
+
 .library-list .region-block .library .library-name {
     padding: 20px 0 10px;
 }
 
-
 .library-list .region-block .library .library-info .info-field {
     display: flex;
     flex-direction: row;
+    align-items: center;
+    padding-bottom: 5px;
 }
 
 .library-list .region-block .library .library-info p {
     margin: 0%;
-    padding-bottom: 5px;
     font-size: 14px;
     line-height: 16px;
 }
 
 ion-icon {
     padding-right: 10px;
+    height: 20px;
+    width: 20px;
 }
+
 
 ion-button {
     margin: 0;
@@ -329,5 +344,16 @@ ion-button::part(native) {
 .v-enter-from,
 .v-leave-to {
     opacity: 0;
+}
+
+ion-select {
+  --placeholder-opacity: 1;
+  width: 100%;
+  justify-content: center;
+}
+
+ion-select::part(placeholder),
+ion-select::part(text) {
+  flex: 0 0 auto;
 }
 </style>
