@@ -15,27 +15,27 @@
             </ion-list>
             <div class="library-list">
                 <div v-for="(region, regionID) in regions" v-bind:key="region" class="region-block">
-                    <div class="region-libraries" v-if="(regionsShow == regionID || regionsShow == 'All')">
+                    <div class="region-libraries" v-if="(regionsShow  == (regionID as unknown) || regionsShow == 'All')">
                         <h2 class="region-name">{{ regionID }}</h2>
-                        <div v-for="library in region" v-bind:key="library.name" class="library">
-                            <h3 class="library-name">{{ library.name }}</h3>
+                        <div v-for="library in region" v-bind:key="library['name']" class="library">
+                            <h3 class="library-name">{{ library['name'] }}</h3>
                             <div class="library-info">
                                 <div class="info-field">
                                     <ion-icon :icon="homeOutline"></ion-icon>
-                                    <p>{{ library.address }}</p>
+                                    <p>{{ library['address'] }}</p>
                                 </div>
                                 <div class="info-field">
                                     <ion-icon :icon="callOutline"></ion-icon>
-                                    <p>{{ library.phone }}</p>
+                                    <p>{{ library['phone'] }}</p>
                                 </div>
                                 <div class="info-field">
                                     <ion-icon :icon="mailOutline"></ion-icon>
-                                    <p>{{ library.email }}</p>
+                                    <p>{{ library['email'] }}</p>
                                 </div>
                             </div>
-                            <ion-button @click="this.openMessage(library)"
-                                v-bind:color="(library.availability == 'Available') ? 'success' : (library.availability == 'Borrowed') ? 'warning' : 'danger'">
-                                {{ library.availability }}
+                            <ion-button @click="openMessage(library)"
+                                v-bind:color="(library['availability'] == 'Available') ? 'success' : (library['availability'] == 'Borrowed') ? 'warning' : 'danger'">
+                                {{ library['availability'] }}
                             </ion-button>
                             <Transition>
                                 <div v-if="reserveMessage || notificationMessage || requestMessage" class="message">
@@ -43,17 +43,17 @@
                                         <div v-if="reserveMessage" class="message-text">
                                             <div class="message-title">
                                                 <h4> Confirm reservation details</h4>
-                                                <font-awesome-icon @click="this.closeMessage()" icon=" fa-xmark" />
+                                                <font-awesome-icon @click="closeMessage()" icon=" fa-xmark" />
                                             </div>
                                             <p>Book: {{ livro }}</p>
-                                            <p>Library: {{ library.name }}</p>
+                                            <p>Library: {{ library['name'] }}</p>
                                             <p>User: ambrosio</p>
                                         </div>
                                         <div v-if="notificationMessage" class="message-text">
                                             <div class="message-title">
                                                 <h4>Do you want to be notified when this book becomes available again?
                                                 </h4>
-                                                <font-awesome-icon @click="this.closeMessage()" icon=" fa-xmark" />
+                                                <font-awesome-icon @click="closeMessage()" icon=" fa-xmark" />
                                             </div>
                                         </div>
                                         <div v-if="requestMessage" class="message-text">
@@ -62,7 +62,7 @@
                                                     you
                                                     wish
                                                     to request it?</h4>
-                                                <font-awesome-icon @click="this.closeMessage()" icon=" fa-xmark" />
+                                                <font-awesome-icon @click="closeMessage()" icon=" fa-xmark" />
                                             </div>
                                         </div>
                                         <ion-button @click="addToDB" color="success">
@@ -79,7 +79,7 @@
         </ion-content>
     </ion-page>
 </template>
-<script>
+<script lang="ts">
 import {
     IonContent, IonPage, IonButton, IonList,
     IonItem,
@@ -113,7 +113,7 @@ export default defineComponent({
         return {
             regionsShow: "All",
             livro: "Way of Kings",
-            regions: [],
+            regions :[],
             reserveMessage: false,
             notificationMessage: false,
             requestMessage: false
@@ -194,12 +194,14 @@ export default defineComponent({
     mounted() {
 
         this.checkAvailability('Way of Kings');
-        this.regions = this.libraries.reduce((group, library) => {
+        const regions = this.libraries.reduce((group, library) => {
             const { region } = library;
             group[region] = group[region] ?? [];
             group[region].push(library);
             return group;
         }, {});
+        return regions;
+        
     }
 
 

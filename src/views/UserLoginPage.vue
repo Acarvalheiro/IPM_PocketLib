@@ -10,15 +10,15 @@
             </div>
             <div>
                 <div class="input">
-                    <ion-input placeholder="Username"></ion-input>
+                    <ion-input placeholder="Username" v-model="userName"></ion-input>
                 </div>
                 <div class="input">
-                    <ion-input placeholder="Password"></ion-input>
+                    <ion-input placeholder="Password" v-model="pass"></ion-input>
                 </div>
             </div>
 
             <div class="buttons">
-                <ion-button class="log-in-button">
+                <ion-button @click="verifyUser()" class="log-in-button">
                     Log in
                 </ion-button>
                 <ion-button class="create-acc-button">
@@ -34,6 +34,10 @@
 <script lang="ts">
 import { IonContent, IonPage, IonInput, IonButton } from '@ionic/vue';
 import { defineComponent, computed } from 'vue';
+import { useFirestore } from 'vuefire'
+import { useCollection } from 'vuefire'
+import { collection, getDoc, doc } from 'firebase/firestore'
+import router from '@/router';
 
 export default defineComponent({
   name: 'LogInPage',
@@ -43,12 +47,31 @@ export default defineComponent({
     IonInput,
     IonButton
   },
-  setup() {
-    const image = computed(() => require('@/assets/PocketLib.png'))
+
+  data() {
     return {
-      image,
+        userName: '',
+        pass: '',
     }
   },
+  setup() {
+    const image = computed(() => require('@/assets/PocketLib.png'))
+    const db = useFirestore()
+    const test = collection(db, 'user')
+    const database = useCollection(collection(db, 'books'))
+    return {database, db, test, image }
+  },
+
+  methods: {
+    verifyUser(){
+        getDoc(doc(this.test, "/" + this.userName)).then((val) => {
+            let user = val.data()
+            if(user != undefined && user.pass == this.pass){
+                router.push("/home")
+            }
+        })
+    }
+  }
 })
 
 </script>
