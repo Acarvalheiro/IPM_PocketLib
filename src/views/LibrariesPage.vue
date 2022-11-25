@@ -68,7 +68,7 @@
         </ion-content>
     </ion-page>
 </template>
-<script>
+<script lang="ts">
 import { IonContent, IonPage, IonButton, IonIcon } from '@ionic/vue';
 import { defineComponent, onMounted } from 'vue';
 import ToolbarComponent from '@/components/Toolbar.vue'
