@@ -34,7 +34,7 @@
                                 </div>
                             </div>
                             <ion-button @click="openMessage(library)"
-                                v-bind:color="(library['availability'] == 'Available' || library['availability'] == 'Reserved') ? 'success' : (library['availability'] == 'Notify me' || library['availability'] == 'Confirmed') ? 'warning' : 'danger'">
+                                v-bind:color="(library['availability'] == 'Reserve' || library['availability'] == 'Reserved') ? 'success' : (library['availability'] == 'Notify me' || library['availability'] == 'Confirmed') ? 'warning' : 'danger'">
                                 {{ library['availability'] }}
                             </ion-button>
                             <Transition>
@@ -46,9 +46,9 @@
                                                 <h4> Confirm reservation details</h4>
                                                 <font-awesome-icon @click="closeMessage()" icon=" fa-xmark" />
                                             </div>
-                                            <p>Book: {{ livro }}</p>
-                                            <p>Library: {{ library['name'] }}</p>
-                                            <p>User: ambrosio</p>
+                                            <p><span class="bolded">Book: </span> {{ livro }}</p>
+                                            <p><span class="bolded">Library: </span> {{ library['name'] }}</p>
+                                            <p><span class="bolded">User: </span> ambrosio</p>
                                         </div>
                                         <div v-if="notificationMessage" class="message-text">
                                             <div class="message-title">
@@ -134,7 +134,7 @@ export default defineComponent({
                 availableBooks.every(element => {
 
                     if (element == book) {
-                        lib.availability = "Available"
+                        lib.availability = "Reserve"
                         return false;
                     }
                 });
@@ -150,7 +150,7 @@ export default defineComponent({
             });
         },
         openMessage(library) {
-            if (library.availability == "Available") {
+            if (library.availability == "Reserve") {
                 this.reserveMessage = !this.reserveMessage;
             }
             if (library.availability == "Notify me") {
@@ -247,8 +247,6 @@ h3 {
     display: flex;
     flex-direction: column;
 }
-
-.library-list .library-search-bar {}
 
 .library-list .region-block {
     display: flex;
@@ -367,6 +365,9 @@ ion-button::part(native) {
 .library-list .region-block .library .message .message-wrapper .message-text p {
     margin: 0;
     padding-bottom: 5px;
+}
+.library-list .region-block .library .message .message-wrapper .message-text p .bolded{
+    font-weight: 600;
 }
 
 .v-enter-active,
