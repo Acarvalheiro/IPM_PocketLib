@@ -1,9 +1,9 @@
 <template>
   <book-info
-    :id="book.title"
     v-for="book in books"
     v-bind:key="book.title"
-    @removeEvent="$emit('removeEvent', book.title)"
+    @removeEvent="$emit('removeEvent', book.title, book.id)"
+    :id="book.id"
     :title="book.title"
     :author="book.author"
     :image="book.image"

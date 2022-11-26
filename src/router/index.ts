@@ -32,7 +32,7 @@ const routes: Array<RouteRecordRaw> = [
     component: BookPage
   },
   {
-    path: '/search',
+    path: '/search/:input',
     name: 'Search',
     component: BookSearch
   },
@@ -47,7 +47,7 @@ const routes: Array<RouteRecordRaw> = [
     component: MyReadLists
   },
   {
-    path: '/readlist',
+    path: '/readlist/:listId',
     name: 'ReadList',
     component: BooksInList
   },

@@ -30,11 +30,11 @@
         </ion-popover>
       </div>
       <read-list-info
-        v-for="list in readLists"
-        v-bind:key="list.title"
-        :title="list.title"
-        :author="list.author"
-        :image="list.image"
+        v-for="list in readlists"
+        v-bind:key="list.id"
+        :title="list.listName"
+        :id="list.id"
+        :owner="list.owner"
         @removeEvent="presentRemoveAlert"
       >
       </read-list-info>
@@ -52,10 +52,13 @@
     IonPopover,
     IonItem,
     IonInput,
+    IonButton,
   } from "@ionic/vue";
   import { addIcons } from "ionicons";
   import { addOutline } from "ionicons/icons";
   import ReadListInfo from "@/components/ReadListInfo.vue";
+  import { useFirestore, useCollection } from "vuefire";
+  import { collection, addDoc, doc, deleteDoc } from "firebase/firestore";
   //import ToolbarComponent from '@/components/Toolbar.vue'
 
   export default defineComponent({
@@ -68,14 +71,10 @@
       IonPopover,
       IonItem,
       IonInput,
+      IonButton,
     },
     data() {
       return {
-        readLists: [
-          { title: "Fav Books" },
-          { title: "Uni Books" },
-          { title: "Future Reads" },
-        ],
         newList: "",
         popoverOpen: false,
       };
@@ -86,7 +85,7 @@
       });
     },
     setup() {
-      const presentRemoveAlert = async (title) => {
+      const presentRemoveAlert = async (title, id) => {
         const alert = await alertController.create({
           header: 'Remove "' + title + '"?',
           buttons: [
@@ -97,7 +96,8 @@
             {
               text: "Confirm",
               handler: () => {
-                document.getElementById(title).remove();
+                deleteDoc(doc(db, "readlists", id));
+                document.getElementById(id).remove();
               },
             },
           ],
@@ -106,7 +106,11 @@
         await alert.present();
       };
 
-      return { presentRemoveAlert };
+      const db = useFirestore();
+      const listsRef = collection(db, "readlists");
+      const readlists = useCollection(collection(db, "readlists"));
+
+      return { presentRemoveAlert, readlists, listsRef, db };
     },
     methods: {
       onDismiss() {
@@ -115,7 +119,10 @@
       },
       addList() {
         if (this.newList != "") {
-          this.readLists.push({ title: this.newList });
+          addDoc(this.listsRef, {
+            listName: this.newList,
+            books: [],
+          });
           this.popoverOpen = false;
         }
       },

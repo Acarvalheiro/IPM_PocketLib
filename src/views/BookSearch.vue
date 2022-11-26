@@ -3,7 +3,7 @@
     <ion-content>
       <!-- <ToolbarComponent /> -->
       <div class="search-info">
-        <h5>Showing results for "{{ result }}"</h5>
+        <h5>Showing results for "{{ input }}"</h5>
         <ion-button size="small" color="medium">
           <span>
             Filter
@@ -11,7 +11,7 @@
           </span>
         </ion-button>
       </div>
-      <book-list :books="books" :readLists="readLists"></book-list>
+      <book-list :books="books" :readLists="readlists"></book-list>
     </ion-content>
   </ion-page>
 </template>
@@ -22,6 +22,9 @@
   import { addIcons } from "ionicons";
   import BookList from "@/components/BookList.vue";
   import { optionsOutline } from "ionicons/icons";
+  import { useFirestore, useCollection } from "vuefire";
+  import { collection, getDocs, query, where } from "firebase/firestore";
+  import { useRoute } from "vue-router";
   //import ToolbarComponent from "@/components/Toolbar.vue";
 
   export default defineComponent({
@@ -35,15 +38,8 @@
     },
     data() {
       return {
-        result: "Clean Code",
-        books: [
-          { title: "Clean Code", author: "Goulão", image: "clean-code.jpg" },
-          { title: "Clean Code", author: "Goulão", image: "clean-code.jpg" },
-          { title: "Clean Code", author: "Goulão", image: "clean-code.jpg" },
-          { title: "Clean Code", author: "Goulão", image: "clean-code.jpg" },
-          { title: "Clean Code", author: "Goulão", image: "clean-code.jpg" },
-        ],
-        readLists: ["Fav Books", "Uni Books", "Future Reads"],
+        result: "Result",
+        books: [],
       };
     },
     created() {
@@ -51,12 +47,71 @@
         "options-outline": optionsOutline,
       });
     },
+    setup() {
+      const route = useRoute();
+      const { input } = route.params;
+
+      const db = useFirestore();
+      const readlists = useCollection(collection(db, "readlists"));
+
+      const booksRef = collection(db, "books");
+      const titleQuery = query(booksRef, where("title", "==", input));
+      const authorQuery = query(booksRef, where("author", "==", input));
+      const publisherQuery = query(booksRef, where("publisher", "==", input));
+
+      return { readlists, titleQuery, authorQuery, publisherQuery, input };
+    },
+    mounted() {
+      this.getResults();
+    },
+    methods: {
+      getResults() {
+        let titleDocs = getDocs(this.titleQuery);
+        let authorDocs = getDocs(this.authorQuery);
+        let publisherDocs = getDocs(this.publisherQuery);
+        titleDocs.then((val) => {
+          val.forEach((v) => {
+            let book = v.data();
+            this.books.push({
+              id: v.id,
+              title: book.title,
+              author: book.author,
+              image: book.image,
+            });
+          });
+        });
+        authorDocs.then((val) => {
+          val.forEach((v) => {
+            let book = v.data();
+            this.books.push({
+              id: v.id,
+              title: book.title,
+              author: book.author,
+              image: book.image,
+            });
+          });
+        });
+        publisherDocs.then((val) => {
+          val.forEach((v) => {
+            let book = v.data();
+            this.books.push({
+              id: v.id,
+              title: book.title,
+              author: book.author,
+              image: book.image,
+            });
+          });
+        });
+      },
+    },
   });
 </script>
 <style scoped>
   .search-info {
     display: flex;
     align-items: center;
+    justify-content: space-between;
+    column-gap: 15px;
     padding: 20px 10px;
   }
   .search-info h5 {

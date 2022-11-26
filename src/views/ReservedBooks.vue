@@ -24,7 +24,7 @@
       </div>
       <book-list
         :books="books"
-        :readLists="readLists"
+        :readLists="readlists"
         :reserved="true"
       ></book-list>
     </ion-content>
@@ -42,6 +42,8 @@
     IonSelectOption,
   } from "@ionic/vue";
   import BookList from "@/components/BookList.vue";
+  import { useFirestore, useCollection } from "vuefire";
+  import { collection, doc, getDoc, getDocs } from "firebase/firestore";
   //import ToolbarComponent from '@/components/Toolbar.vue'
 
   export default defineComponent({
@@ -57,49 +59,7 @@
     },
     data() {
       return {
-        books: [
-          {
-            title: "Clean Code",
-            author: "Goulão",
-            image: "clean-code.jpg",
-            status: "Picked Up",
-            show: true,
-            date: "20/12/2022",
-          },
-          {
-            title: "Clean Code",
-            author: "Goulão",
-            image: "clean-code.jpg",
-            status: "Picked Up",
-            show: true,
-            date: "20/12/2022",
-          },
-          {
-            title: "Bad Code",
-            author: "Goulão",
-            image: "clean-code.jpg",
-            status: "Waiting Pick Up",
-            show: true,
-            date: "20/12/2022",
-          },
-          {
-            title: "Mid Code",
-            author: "Goulão",
-            image: "clean-code.jpg",
-            status: "Waiting Pick Up",
-            show: true,
-            date: "20/12/2022",
-          },
-          {
-            title: "Clean Code",
-            author: "Goulão",
-            image: "clean-code.jpg",
-            status: "Picked Up",
-            show: true,
-            date: "20/12/2022",
-          },
-        ],
-        readLists: ["Fav Books", "Uni Books", "Future Reads"],
+        books: [],
         statusOptions: ["All", "Picked Up", "Waiting Pick Up"],
         filterOption: "All",
       };
@@ -116,6 +76,34 @@
             this.filterOption === "All";
         });
       },
+      getBooks() {
+        getDocs(this.reserved).then((val) => {
+          val.forEach((elem) => {
+            let bookRef = getDoc(doc(this.db, "books", elem.id));
+            bookRef.then((v) => {
+              let book = v.data();
+              this.books.push({
+                id: v.id,
+                title: book.title,
+                author: book.author,
+                image: book.image,
+                status: book.status,
+                show: true,
+                date: "20/12/2022",
+              });
+            });
+          });
+        });
+      },
+    },
+    setup() {
+      const db = useFirestore();
+      const reserved = collection(db, "reserved");
+      const readlists = useCollection(collection(db, "readlists"));
+      return { reserved, readlists, db };
+    },
+    mounted() {
+      this.getBooks();
     },
   });
 </script>

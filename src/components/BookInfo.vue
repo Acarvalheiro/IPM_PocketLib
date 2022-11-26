@@ -1,5 +1,5 @@
 <template>
-  <div class="book-info-wrapper" v-show="show">
+  <div :id="id" class="book-info-wrapper" v-show="show">
     <img
       :src="require(`@/assets/${image}`)"
       alt="image"
@@ -19,10 +19,10 @@
           >
             <ion-select-option
               v-for="elem in readLists"
-              v-bind:key="elem"
-              :value="elem"
+              v-bind:key="elem.id"
+              :value="elem.id"
             >
-              {{ elem }}
+              {{ elem.listName }}
             </ion-select-option>
           </ion-select>
         </ion-item>
@@ -66,6 +66,8 @@
   import { addIcons } from "ionicons";
   import { closeOutline } from "ionicons/icons";
   import { useRouter } from "vue-router";
+  import { useFirestore } from "vuefire";
+  import { collection, doc, arrayUnion, updateDoc } from "firebase/firestore";
 
   export default defineComponent({
     name: "BookInfo",
@@ -78,6 +80,10 @@
       IonIcon,
     },
     props: {
+      id: {
+        type: String,
+        required: true,
+      },
       title: {
         type: String,
         required: true,
@@ -130,20 +136,28 @@
     },
     setup() {
       const router = useRouter();
-      return { router };
+
+      const db = useFirestore();
+      const readlistsRef = collection(db, "readlists");
+
+      return { router, db, readlistsRef };
     },
     emits: ["removeEvent"],
     methods: {
       onChange(event) {
-        if (event.target.value == 0) {
+        let value = event.target.value;
+        if (value == 0) {
           this.addedTo = "";
         } else {
+          let listId = value[0];
+          updateDoc(doc(this.readlistsRef, listId), {
+            books: arrayUnion(this.id),
+          });
           this.addedTo = "Added to readlist";
         }
       },
       pickedUp() {
         if (this.status != null) {
-          console.log(this.status);
           return this.status == "Picked Up";
         }
       },
