@@ -44,7 +44,7 @@ export default defineComponent({
 .HorizBookList-Wrapper {
     display: flex;
     flex-direction: column;
-    overflow: scroll;
+    text-align: start;
     padding: 10px 0 10px 10px;
 
 }
@@ -59,6 +59,7 @@ export default defineComponent({
 .HorizBookList-Wrapper>.HorizBookList {
     display: flex;
     flex-direction: row;
+    overflow: scroll;
     padding-top: 10px;
 
 }

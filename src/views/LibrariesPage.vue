@@ -15,7 +15,7 @@
             </ion-list>
             <div class="library-list">
                 <div v-for="(region, regionID) in regions" v-bind:key="region" class="region-block">
-                    <div class="region-libraries" v-if="(regionsShow  == (regionID as unknown) || regionsShow == 'All')">
+                    <div class="region-libraries" v-if="(regionsShow == (regionID as unknown) || regionsShow == 'All')">
                         <h2 class="region-name">{{ regionID }}</h2>
                         <div v-for="library in region" v-bind:key="library['name']" class="library">
                             <h3 class="library-name">{{ library['name'] }}</h3>
@@ -34,11 +34,12 @@
                                 </div>
                             </div>
                             <ion-button @click="openMessage(library)"
-                                v-bind:color="(library['availability'] == 'Available') ? 'success' : (library['availability'] == 'Borrowed') ? 'warning' : 'danger'">
+                                v-bind:color="(library['availability'] == 'Available' || library['availability'] == 'Reserved') ? 'success' : (library['availability'] == 'Notify me' || library['availability'] == 'Confirmed') ? 'warning' : 'danger'">
                                 {{ library['availability'] }}
                             </ion-button>
                             <Transition>
-                                <div v-if="reserveMessage || notificationMessage || requestMessage" class="message">
+                                <div v-if="((reserveMessage || notificationMessage || requestMessage) && library.name == libraryMessage)"
+                                    class="message">
                                     <div class="message-wrapper">
                                         <div v-if="reserveMessage" class="message-text">
                                             <div class="message-title">
@@ -65,7 +66,7 @@
                                                 <font-awesome-icon @click="closeMessage()" icon=" fa-xmark" />
                                             </div>
                                         </div>
-                                        <ion-button @click="addToDB" color="success">
+                                        <ion-button @click="confirmRequest(library)" color="success">
                                             Confirm
                                         </ion-button>
                                     </div>
@@ -88,10 +89,10 @@ import {
 } from '@ionic/vue';
 import { defineComponent, onMounted } from 'vue';
 import ToolbarComponent from '@/components/Toolbar.vue'
-import { homeOutline, mailOutline, callOutline, librarySharp } from 'ionicons/icons';
+import { homeOutline, mailOutline, callOutline, librarySharp, library } from 'ionicons/icons';
 import { useFirestore } from 'vuefire'
 import { useCollection } from 'vuefire'
-import { collection, addDoc } from 'firebase/firestore'
+import { collection, addDoc, getDocs } from 'firebase/firestore'
 
 
 let num = 0;
@@ -113,25 +114,25 @@ export default defineComponent({
         return {
             regionsShow: "All",
             livro: "Way of Kings",
-            regions : [] as any[],
+            regions: [] as any[],
+            libraries: [] as any[],
             reserveMessage: false,
             notificationMessage: false,
-            requestMessage: false
+            requestMessage: false,
+            libraryMessage: ""
         }
     },
     methods: {
         onChange(event) {
-            console.log(event.target.value)
             this.regionsShow = event.target.value;
         },
 
         checkAvailability(book) {
-
             this.libraries.forEach(lib => {
                 let availableBooks = lib.available;
                 let borrowedBooks = lib.borrowed;
                 availableBooks.every(element => {
-                   
+
                     if (element == book) {
                         lib.availability = "Available"
                         return false;
@@ -139,12 +140,12 @@ export default defineComponent({
                 });
                 borrowedBooks.every(element => {
                     if (element == book) {
-                        lib.availability = "Borrowed"
+                        lib.availability = "Notify me"
                         return false;
                     }
                 });
                 if (lib.availability == "") {
-                    lib.availability = "Unavailable"
+                    lib.availability = "Request"
                 }
             });
         },
@@ -152,12 +153,13 @@ export default defineComponent({
             if (library.availability == "Available") {
                 this.reserveMessage = !this.reserveMessage;
             }
-            if (library.availability == "Borrowed") {
+            if (library.availability == "Notify me") {
                 this.notificationMessage = !this.notificationMessage
             }
-            if (library.availability == "Unavailable") {
+            if (library.availability == "Request") {
                 this.requestMessage = !this.requestMessage
             }
+            this.libraryMessage = library.name
 
         },
         closeMessage() {
@@ -167,39 +169,70 @@ export default defineComponent({
         },
 
         addToDB() {
-            console.log(this.test)
-            addDoc(this.test, {
-                "name": "Biblioteca do Porto",
-                "address": "R. de Dom João IV 2, 4000-296 Porto",
+            addDoc(this.libraryDb, {
+                "name": "Biblioteca Pública Municipal de Setúbal",
+                "address": "Av. Luísa Todi 188, 2900-249 Setúbal",
                 "availability": "",
-                "email": "biblioalcporto@gmail.com",
+                "email": "biblioalcsetubal@gmail.com",
                 "available": [],
-                "borrowed": [],
-                "region": "Porto",
+                "borrowed": ['Way of Kings'],
+                "region": "Setúbal",
                 "phone": "939245874"
             })
+        },
+
+        orderRegions(a, b) {
+            if (a.region < b.region) {
+                return -1
+            }
+            if (b.region > a.region) {
+                return 1
+            }
+            return 0
+        },
+
+        confirmRequest(library) {
+            if (this.reserveMessage) {
+                library.availability = "Reserved"
+                this.reserveMessage = false;
+                return
+            }
+            if ( this.notificationMessage){
+                library.availability = "Confirmed"
+                this.notificationMessage = false;
+                return
+            }
+            library.availability = "Requested"
+                this.requestMessage = false;
+                return
         }
-
-
     },
 
     setup() {
         const db = useFirestore()
-        const test = collection(db, 'libraries')
-        const libraries = useCollection(collection(db, 'libraries'))
-
-        return { homeOutline, mailOutline, callOutline, libraries, db, test }
+        const libraryDb = collection(db, 'libraries')
+        const reservedDB = collection(db, 'reserved')
+        const notificationDB = collection(db, 'notification')
+        return { homeOutline, mailOutline, callOutline, db, libraryDb, reservedDB, notificationDB }
     },
 
     mounted() {
+        getDocs(this.libraryDb).then((val) => {
+            val.forEach(element => {
+                this.libraries.push(element.data());
+            })
+            this.libraries.sort(this.orderRegions)
+            this.checkAvailability('Way of Kings');
+            this.regions = this.libraries.reduce((group, library) => {
+                const { region } = library;
+                group[region] = group[region] ?? [];
+                group[region].push(library);
+                return group;
+            }, {}) as any[];
 
-        this.checkAvailability('Way of Kings');
-        this.regions = this.libraries.reduce((group, library) => {
-            const { region } = library;
-            group[region] = group[region] ?? [];
-            group[region].push(library);
-            return group;
-        }, {}) as any[];
+            
+        });
+
     }
 
 
@@ -347,13 +380,13 @@ ion-button::part(native) {
 }
 
 ion-select {
-  --placeholder-opacity: 1;
-  width: 100%;
-  justify-content: center;
+    --placeholder-opacity: 1;
+    width: 100%;
+    justify-content: center;
 }
 
 ion-select::part(placeholder),
 ion-select::part(text) {
-  flex: 0 0 auto;
+    flex: 0 0 auto;
 }
 </style>
