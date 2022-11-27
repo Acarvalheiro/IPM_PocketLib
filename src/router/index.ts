@@ -62,7 +62,7 @@ const routes: Array<RouteRecordRaw> = [
     component: CreateAccountPage
   },
   {
-    path: '/libraries',
+    path: '/libraries/:bookId',
     name: 'Libraries',
     component: Libraries
   },

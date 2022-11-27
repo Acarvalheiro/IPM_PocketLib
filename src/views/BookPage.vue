@@ -21,7 +21,7 @@
         </p>
       </div>
       <div>
-        <ion-button class="button" @click="() => router.push(setPath())">{{
+        <ion-button class="button" @click="() => setPath()">{{
           setButton()
         }}</ion-button>
       </div>
@@ -74,12 +74,14 @@
     mounted() {
       getDoc(this.bookRef).then((val) => {
         this.book = val.data();
+        this.bookId = val.id;
       });
     },
     data() {
       {
         return {
           book: "",
+          bookId :"",
           synopse:
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sit amet velit velit. Curabitur nec massa vitae dui finibus luctus. Nunc a ex nec mauris lacinia iaculis sit amet sed orci. Morbi pulvinar porta urna non pulvinar. Cras at leo luctus, semper mi quis, congue ante. In hac habitasse platea dictumst. Phasellus euismod leo sit amet vulputate sagittis. Cras iaculis neque urna. Integer sollicitudin auctor turpis, a iaculis magna volutpat malesuada.",
           reviews: [
@@ -113,11 +115,11 @@
       setPath() {
         let status = this.book.status;
         if (status === "") {
-          return "/libraries";
+          this.router.replace({path:"/libraries/"+ this.bookId, query:{name: this.book.title}})
         } else if (status === "Picked Up") {
-          return "/return";
+          this.router.push("/return");
         } else {
-          return "/qrcode";
+          this.router.push("/qrcode");
         }
       },
     },

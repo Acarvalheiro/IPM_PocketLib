@@ -46,7 +46,7 @@
                                                 <h4> Confirm reservation details</h4>
                                                 <font-awesome-icon @click="closeMessage()" icon=" fa-xmark" />
                                             </div>
-                                            <p><span class="bolded">Book: </span> {{ livro }}</p>
+                                            <p><span class="bolded">Book: </span> {{ book }}</p>
                                             <p><span class="bolded">Library: </span> {{ library['name'] }}</p>
                                             <p><span class="bolded">User: </span> ambrosio</p>
                                         </div>
@@ -89,10 +89,9 @@ import {
 } from '@ionic/vue';
 import { defineComponent, onMounted } from 'vue';
 import ToolbarComponent from '@/components/Toolbar.vue'
-import { homeOutline, mailOutline, callOutline, librarySharp, library } from 'ionicons/icons';
+import { homeOutline, mailOutline, callOutline} from 'ionicons/icons';
 import { useFirestore } from 'vuefire'
-import { useCollection } from 'vuefire'
-import { collection, addDoc, getDocs } from 'firebase/firestore'
+import { collection, setDoc,addDoc, getDocs, doc } from 'firebase/firestore'
 
 
 let num = 0;
@@ -113,7 +112,8 @@ export default defineComponent({
     data() {
         return {
             regionsShow: "All",
-            livro: "Way of Kings",
+            book: "",
+            bookId :"",
             regions: [] as any[],
             libraries: [] as any[],
             reserveMessage: false,
@@ -195,11 +195,14 @@ export default defineComponent({
             if (this.reserveMessage) {
                 library.availability = "Reserved"
                 this.reserveMessage = false;
+                setDoc(doc(this.reservedDB, '/' + this.bookId), {"library": library.name})
+                this.$router.push("/book/" + this.bookId)
                 return
             }
             if ( this.notificationMessage){
                 library.availability = "Confirmed"
                 this.notificationMessage = false;
+                setDoc(doc(this.notificationDB, '/' + this.bookId), {"library": library.name})
                 return
             }
             library.availability = "Requested"
@@ -212,11 +215,13 @@ export default defineComponent({
         const db = useFirestore()
         const libraryDb = collection(db, 'libraries')
         const reservedDB = collection(db, 'reserved')
-        const notificationDB = collection(db, 'notification')
+        const notificationDB = collection(db, 'notifications')
         return { homeOutline, mailOutline, callOutline, db, libraryDb, reservedDB, notificationDB }
     },
 
     mounted() {
+        this.book = this.$route.query.name as string
+        this.bookId = this.$route.params.bookId as string
         getDocs(this.libraryDb).then((val) => {
             val.forEach(element => {
                 this.libraries.push(element.data());
