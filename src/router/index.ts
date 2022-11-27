@@ -14,7 +14,7 @@ import Libraries from '../views/LibrariesPage.vue'
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
-    redirect: '/create'
+    redirect: '/login'
   },
   {
     path: '/home',
