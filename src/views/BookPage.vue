@@ -1,5 +1,7 @@
 <template>
-  <ion-page>
+  <ion-page id="main-component">
+    <MenuComponent/>
+    <ToolbarComponent/>
     <ion-content :fullscreen="true">
       <div class="book-main">
         <div class="cover" v-if="book.image !== undefined">
@@ -63,6 +65,8 @@ import { defineComponent } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useFirestore } from "vuefire";
 import { getDoc, doc } from "firebase/firestore";
+import ToolbarComponent from '@/components/Toolbar.vue'
+import MenuComponent from '@/components/MenuComponent.vue'
 
 export default defineComponent({
   name: "BookPage",
@@ -70,7 +74,9 @@ export default defineComponent({
     IonContent,
     IonPage,
     IonButton,
-    IonIcon
+    IonIcon,
+    ToolbarComponent,
+    MenuComponent
   },
   setup() {
     const router = useRouter();

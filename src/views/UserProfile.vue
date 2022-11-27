@@ -1,7 +1,8 @@
 <template>
     <ion-page id="main-component">
         <ion-content>
-            <!-- <ToolbarComponent /> -->
+            <MenuComponent/>
+            <ToolbarComponent />
             <ion-card class="profile-header">
                 <div class="button-wrapper">
                     <ion-button fill="clear" @click="editingUserName = !editingUserName">Edit</ion-button>
@@ -51,7 +52,8 @@
     import { addIcons } from 'ionicons';
     import { personOutline, starOutline } from 'ionicons/icons';
     import { defineComponent } from 'vue';
-    //import ToolbarComponent from '@/components/Toolbar.vue'
+    import ToolbarComponent from '@/components/Toolbar.vue';
+    import MenuComponent from '@/components/MenuComponent.vue'
   
   export default defineComponent({
     name: 'UserProfile',
@@ -63,7 +65,8 @@
         IonContent,
         IonItem,
         IonInput,
-        //ToolbarComponent,
+        ToolbarComponent,
+        MenuComponent,
         IonPage
     },
 
