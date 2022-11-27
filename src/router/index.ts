@@ -11,6 +11,7 @@ import LogInPage from '../views/UserLoginPage.vue'
 import CreateAccountPage from '../views/CreateAccountPage.vue'
 import Libraries from '../views/LibrariesPage.vue'
 import Notifications from '../views/NotificationsPage.vue'
+import QRcode from '../views/QRCodePage.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -71,6 +72,11 @@ const routes: Array<RouteRecordRaw> = [
     path: '/libraries/:bookId',
     name: 'Libraries',
     component: Libraries
+  },
+  {
+    path: '/qrCodePage',
+    name: 'QRcode',
+    component: QRcode
   },
 ]
 

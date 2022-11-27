@@ -4,22 +4,12 @@
   <ion-page id="main-component">
       <ToolbarComponent/>
       <ion-content :fullscreen="true">
-        <div class="wrapper">
-          <div class="container" id="logoImage">
+        <div class="container">
             <img :src="require('@/assets/PocketLib.png')">
-          
-        <div class="container1">
           <SearchComponent/>
-          <div class="container2">
-            <ReadListSelectorComp/>
-            <div class="container3">
-              <HorizBookList/>
-            </div>
-          </div>
+          <ReadListSelectorComp/>
         </div>
-        
-      </div>
-      </div>
+            <HorizBookList/>
     </ion-content>
   </ion-page>
 </template>
@@ -74,12 +64,9 @@ export default defineComponent({
 
 <style scoped>
 .container {
-  text-align: center;
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 60%;
-  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 
