@@ -18,22 +18,22 @@
     <div class="menu-content">
       <ion-list>
         <ion-item>
-          <ion-button @click="router.push('/home'), isOpen=false ">
+          <ion-button fill="clear" size="large" @click="router.push('/home'), isOpen=false ">
             Home
           </ion-button>
         </ion-item>
         <ion-item>
-          <ion-button @click="router.push('/profile'), isOpen=false">
+          <ion-button fill="clear" size="large" @click="router.push('/profile'), isOpen=false">
             Profile
           </ion-button>
         </ion-item>
         <ion-item>
-          <ion-button @click="router.push('/myreadlists'), isOpen=false">
+          <ion-button fill="clear" size="large" @click="router.push('/myreadlists'), isOpen=false">
             Collections
-          </ion-button>
+          </ion-button> 
         </ion-item>
         <ion-item>
-          <ion-button @click="router.push('/reserved'), isOpen=false" class="button-native">
+          <ion-button fill="clear" size="large" @click="router.push('/reserved'), isOpen=false" class="button-native">
             Reserved Books
           </ion-button>
         </ion-item>
@@ -91,6 +91,9 @@ ion-icon{
   height: 35px;
   width: 35px;
 }
+ion-item::part(native){
+  padding: 0;
+}
 .header{
   padding: 0 20px;
   display: flex;
@@ -118,7 +121,7 @@ ion-icon{
 
 .menu .menu-content {
   background-color: white;
-  width: 40%;
+  width: fit-content;
   height: 100%;
 }
 </style>

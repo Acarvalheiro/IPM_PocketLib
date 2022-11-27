@@ -2,7 +2,7 @@
     <div class="HorizBookList-Wrapper">
         <h2 class="list-title">{{ title }}</h2>
         <div class="HorizBookList">
-            <div class="book-item" v-for="(book, index) in books" v-bind:key="book.Title">
+            <div v-for="(book, index) in books" v-bind:key="book.Title" @click="router.push('/book/'+book.id)" class="book-item" >
                 <p class="index">{{ index + 1 }}.</p>
                 <img :src="require(`@/assets/${book.image}`)">
                 <p class="title">{{ book.title }}</p>
@@ -30,6 +30,10 @@ export default defineComponent({
         type: String,
         required: true,
       }
+    },
+    setup(){
+        const router = useRouter()
+        return {router}
     }
 });
 </script>

@@ -1,15 +1,13 @@
 <template>
-
-  <MenuComponent />
   <ion-page id="main-component">
-    <ToolbarComponent />
+    <MenuComponent />
     <ion-content :fullscreen="true">
       <div class="container">
         <img :src="require('@/assets/PocketLib.png')">
         <SearchComponent />
         <ReadListSelectorComp />
       </div>
-      <HorizBookList :title="title" :books="books"></HorizBookList>
+      <HorizBookList :title="'Trending'" :books="trending"></HorizBookList>
     </ion-content>
   </ion-page>
 </template>
@@ -18,7 +16,6 @@
 import { IonContent, IonPage } from '@ionic/vue';
 import { defineComponent, computed, ref } from 'vue';
 import SearchComponent from '@/components/SearchComponent.vue'
-import ToolbarComponent from '@/components/Toolbar.vue'
 import MenuComponent from '@/components/MenuComponent.vue'
 import ReadListSelectorComp from '@/components/ReadListSelector.vue'
 import HorizBookList from '@/components/HorizBookList.vue'
@@ -34,7 +31,6 @@ export default defineComponent({
     IonContent,
     IonPage,
     SearchComponent,
-    ToolbarComponent,
     MenuComponent,
     ReadListSelectorComp,
     HorizBookList
@@ -54,8 +50,8 @@ export default defineComponent({
   data() {
     let canIShow = false;
     let title = "";
-    let books = [];
-    return {title,canIShow,books}
+    let trending = [];
+    return {title,canIShow,trending}
   },
   mounted() {
     getDocs(this.trendingDB).then((val) => {
@@ -63,7 +59,8 @@ export default defineComponent({
         let bookRef = getDoc(doc(this.db, "books", element.id));
         bookRef.then((v) => {
           let book = v.data();
-          this.books.push({
+          this.trending.push({
+            id:v.id,
             title: book.title,
             image: book.image,
           })
