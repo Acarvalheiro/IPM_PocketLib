@@ -1,7 +1,8 @@
 <template>
   <ion-page id="main-component">
     <ion-content>
-      <!-- <ToolbarComponent /> -->
+      <MenuComponent />
+      <ToolbarComponent />
       <h2 class="list-title">{{ listName }}</h2>
       <book-list
         :books="books"
@@ -19,11 +20,18 @@
   import { useFirestore } from "vuefire";
   import { doc, getDoc, updateDoc, arrayRemove } from "firebase/firestore";
   import { useRoute } from "vue-router";
-  //import ToolbarComponent from '@/components/Toolbar.vue'
+  import ToolbarComponent from "@/components/Toolbar.vue";
+  import MenuComponent from "@/components/MenuComponent.vue";
 
   export default defineComponent({
     name: "BooksInReadList",
-    components: { BookList, IonContent, IonPage },
+    components: {
+      BookList,
+      IonContent,
+      IonPage,
+      ToolbarComponent,
+      MenuComponent,
+    },
     data() {
       return {
         books: [],
@@ -91,6 +99,6 @@
 <style scoped>
   .list-title {
     margin: 0;
-    padding: 20px 10px;
+    padding: 20px;
   }
 </style>

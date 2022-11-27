@@ -179,7 +179,7 @@
     display: flex;
     column-gap: 20px;
     width: 100%;
-    padding: 15px 10px;
+    padding: 15px 20px;
   }
   .book-info-wrapper img {
     width: 40%;

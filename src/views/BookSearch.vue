@@ -1,7 +1,8 @@
 <template>
   <ion-page id="main-component">
     <ion-content>
-      <!-- <ToolbarComponent /> -->
+      <MenuComponent />
+      <ToolbarComponent />
       <div class="search-info">
         <h5>Showing results for "{{ input }}"</h5>
         <ion-button size="small" color="medium">
@@ -25,7 +26,8 @@
   import { useFirestore, useCollection } from "vuefire";
   import { collection, getDocs, query, where } from "firebase/firestore";
   import { useRoute } from "vue-router";
-  //import ToolbarComponent from "@/components/Toolbar.vue";
+  import ToolbarComponent from "@/components/Toolbar.vue";
+  import MenuComponent from "@/components/MenuComponent.vue";
 
   export default defineComponent({
     name: "BookSearch",
@@ -35,6 +37,8 @@
       IonPage,
       IonButton,
       IonIcon,
+      ToolbarComponent,
+      MenuComponent,
     },
     data() {
       return {
@@ -112,7 +116,7 @@
     align-items: center;
     justify-content: space-between;
     column-gap: 15px;
-    padding: 20px 10px;
+    padding: 20px;
   }
   .search-info h5 {
     margin: 0;
