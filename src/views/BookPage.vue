@@ -1,8 +1,7 @@
 <template>
-  <ion-page id="main-component">
+  <ion-page>
+    <menu-component></menu-component>
     <ion-content>
-      <MenuComponent />
-      <ToolbarComponent />
       <div class="book-main">
         <div class="cover" v-if="book.image !== undefined">
           <img :src="require(`@/assets/${book.image}`)">
@@ -68,7 +67,6 @@ import { defineComponent } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useFirestore } from "vuefire";
 import { getDoc, doc } from "firebase/firestore";
-import ToolbarComponent from '@/components/Toolbar.vue'
 import MenuComponent from '@/components/MenuComponent.vue'
 
 export default defineComponent({
@@ -79,7 +77,6 @@ export default defineComponent({
     IonButton,
     IonIcon,
     IonCard,
-    ToolbarComponent,
     MenuComponent
   },
   setup() {
@@ -259,6 +256,7 @@ export default defineComponent({
   margin: 20px 20px;
   color: black;
 }
+
 .reviews {
   padding: 0 15px;
   text-align: left;
