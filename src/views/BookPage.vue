@@ -1,8 +1,8 @@
 <template>
   <ion-page id="main-component">
-    <MenuComponent/>
-    <ToolbarComponent/>
-    <ion-content :fullscreen="true">
+    <ion-content>
+      <MenuComponent />
+      <ToolbarComponent />
       <div class="book-main">
         <div class="cover" v-if="book.image !== undefined">
           <img :src="require(`@/assets/${book.image}`)">
@@ -29,30 +29,33 @@
         </div>
       </div>
 
-
-      <div class="synopse">
-        <h3>Synopse</h3>
-        <p>{{ synopse }}</p>
-      </div>
-      <div class="reviews">
-        <div class="review-header">
-          <h2>Reviews</h2>
-          <ion-icon v-for="n in getAvgScore()" :key="n" name="star" color="warning"></ion-icon>
+      <ion-card class="synopse-card">
+        <div class="synopse">
+          <h3>Synopse</h3>
+          <p>{{ synopse }}</p>
         </div>
-        <div class="review" v-for="review in reviews" :key="review.text">
-          <div class="review-score">
-            <ion-icon class="userIcon" name="person-circle-outline" color="medium"></ion-icon>
-            <div class="user-score">
-              <div class="user-info">
-                <h4> {{ review.user }} </h4>
-                <p>{{ review.date }}</p>
-              </div>
-              <ion-icon v-for="n in review.score" :key="n" name="star" color="warning"></ion-icon>
-            </div>
+      </ion-card>
+      <ion-card class="reviews-card">
+        <div class="reviews">
+          <div class="review-header">
+            <h2>Reviews</h2>
+            <ion-icon v-for="n in getAvgScore()" :key="n" name="star" color="warning"></ion-icon>
           </div>
-          <p>{{ review.text }}</p>
+          <div class="review" v-for="review in reviews" :key="review.text">
+            <div class="review-score">
+              <ion-icon class="userIcon" name="person-circle-outline" color="medium"></ion-icon>
+              <div class="user-score">
+                <div class="user-info">
+                  <h4> {{ review.user }} </h4>
+                  <p>{{ review.date }}</p>
+                </div>
+                <ion-icon v-for="n in review.score" :key="n" name="star" color="warning"></ion-icon>
+              </div>
+            </div>
+            <p>{{ review.text }}</p>
+          </div>
         </div>
-      </div>
+      </ion-card>
     </ion-content>
   </ion-page>
 </template>
@@ -60,7 +63,7 @@
 <script>
 import { addIcons } from "ionicons";
 import { star, personCircleOutline } from "ionicons/icons";
-import { IonContent, IonPage, IonButton, IonIcon } from "@ionic/vue";
+import { IonContent, IonPage, IonButton, IonIcon, IonCard } from "@ionic/vue";
 import { defineComponent } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useFirestore } from "vuefire";
@@ -75,6 +78,7 @@ export default defineComponent({
     IonPage,
     IonButton,
     IonIcon,
+    IonCard,
     ToolbarComponent,
     MenuComponent
   },
@@ -187,6 +191,7 @@ export default defineComponent({
   width: 49%;
 }
 
+
 .book-main .cover img {
   width: 100%;
   box-shadow: 0px 12px 15px 5px rgba(0, 0, 0, .3);
@@ -213,10 +218,15 @@ export default defineComponent({
   margin: 0 0 5px;
 }
 
+.synopse-card {
+  margin: 20px 20px;
+  color: black;
+}
+
 .synopse {
+  text-align: justify;
   position: relative;
-  padding: 30px 20px 30px
-    /* transform: translateY(-50%); */
+  padding: 15px;
 }
 
 .synopse h3 {
@@ -245,8 +255,12 @@ export default defineComponent({
 
 }
 
+.reviews-card {
+  margin: 20px 20px;
+  color: black;
+}
 .reviews {
-  padding: 0 20px;
+  padding: 0 15px;
   text-align: left;
   font-size: 13px;
 }
@@ -255,7 +269,7 @@ export default defineComponent({
   display: flex;
   flex-direction: row;
   align-items: center;
-  padding-bottom: 10px;
+  padding: 10px 0;
 }
 
 .reviews .review-header ion-icon {
@@ -286,16 +300,18 @@ export default defineComponent({
   padding-bottom: 10px;
 }
 
-.review .review-score .user-score{
+.review .review-score .user-score {
   display: flex;
   flex-direction: row;
   align-items: center;
 }
-.review .review-score .user-info{
+
+.review .review-score .user-info {
   display: flex;
   flex-direction: column;
   align-self: baseline;
 }
+
 .review .review-score h4 {
   font-size: 20px;
   margin: 0;
