@@ -4,40 +4,33 @@
         <div class="HorizBookList">
             <div class="book-item" v-for="(book, index) in books" v-bind:key="book.Title">
                 <p class="index">{{ index + 1 }}.</p>
-                <img :src="require(`@/assets/${book.Image}`)">
-                <p class="title">{{ book.Title }}</p>
+                <img :src="require(`@/assets/${book.image}`)">
+                <p class="title">{{ book.title }}</p>
             </div>
         </div>
     </div>
 
 </template>
-<script lang="ts">
-import { defineComponent } from "@vue/runtime-core";
+
+<script>
+import { defineComponent, ref } from "@vue/runtime-core";
+import { useFirestore } from "vuefire";
+import { collection, query, where, getDocs, doc, getDoc, forEach } from "firebase/firestore";
+import { useRouter } from 'vue-router';
 
 
 export default defineComponent({
     name: 'HorizBookList',
-    data() {
-        {
-            return {
-                title: "Trending",
-                books: [{
-                    Image: 'Way-of-Kings-200x300 (1).jpg',
-                    Title: 'Titulo1'
-                },
-                {
-                    Image: 'Way-of-Kings-200x300 (1).jpg',
-                    Title: 'Titulo3'
-                },
-                {
-                    Image: 'Way-of-Kings-200x300 (1).jpg',
-                    Title: 'Titulo2'
-                }
-
-                ]
-            }
-        }
-    },
+    props: {
+      books: {
+        type: Array,
+        required: true,
+      },
+      title: {
+        type: String,
+        required: true,
+      }
+    }
 });
 </script>
 <style scoped>

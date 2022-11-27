@@ -1,20 +1,20 @@
 <template>
   <ion-list>
     <ion-item>
-      <ion-select interface="popover" placeholder="Your readbooks..">
+      <ion-select interface="popover" placeholder="Your readbooks.." @IonChange="handleChange($event)">
         <IonSelectOption 
         v-for="list in readlists" 
         v-bind:key="list.id" 
         :title="list.listName" 
         :id="list.id"
+        :value="list.id"
         >
-          <span @click="() => router.push('/profile')">
-            {{list.listName}}
-          </span>
+          {{list.listName}}
         </IonSelectOption>
       </ion-select>
     </ion-item>
   </ion-list>
+  <HorizBookList/>
 </template>
   
 <script>
@@ -36,6 +36,7 @@ export default defineComponent({
     return {
       newList: "",
       popoverOpen: false,
+      currentSelectedRl: ""
     };
   },
   setup() {
@@ -46,6 +47,13 @@ export default defineComponent({
 
     return { router, readlists, listsRef, db };
   },
+  methods: {
+    handleChange(event, ) {
+      console.log(event.target.value)
+      console.log(event.target.value.id)
+      this.currentSelectedRl= event.target.value
+    }
+  }
 
 
 });

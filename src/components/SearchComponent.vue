@@ -1,9 +1,9 @@
 <template>
 
-  <ion-searchbar inputmode="text" @ionInput="handleChange($event)" placeholder="Search books" value=""></ion-searchbar>
-  <ion-list style="width: 75%" v-if="canIShow">
+  <ion-searchbar inputmode="text"  @ionInput="handleChange($event)" placeholder="Search books" value=""></ion-searchbar>
+  <ion-list style="width: 75%; z-index: 999;" v-if="canIShow">
     <ion-item v-for="result in results" :key=result.title>
-      <ion-label @click="() => router.push('/book/:bookId')" :bookId=result.id>
+      <ion-label @click="() => router.push('/book/' + result.id)">
         <p style="text-align:left;">
           {{ result.title }}
           <span style="float:right;">
@@ -47,11 +47,8 @@ export default defineComponent({
 
   methods: {
     handleChange(event) {
-      console.log("Wa" + this.canIShow)
       const query = event.target.value.toLowerCase();
-
       this.canIShow = true;
-
       this.results = this.books.filter((book) => {
         return (book.title.toLowerCase().indexOf(query) > -1 && query != "");
       })
@@ -86,6 +83,7 @@ export default defineComponent({
 }
 
 .imgSearchBook {
-  width: 30%;
-}
+    width: 40px;
+    height: 55px;
+} 
 </style>
