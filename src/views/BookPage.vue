@@ -8,15 +8,15 @@
       <div class="info">
         <strong>{{ book.title }}</strong>
         <p>
-          <strong>Author: </strong> <br />
+          <strong>Author: </strong>
           {{ book.author }}
         </p>
         <p>
-          <strong>Publisher: </strong> <br />
+          <strong>Publisher: </strong>
           {{ book.publisher }}
         </p>
         <p>
-          <strong>Publish Date: </strong> <br />
+          <strong>Publish Date: </strong>
           {{ book.publishDate }}
         </p>
       </div>
@@ -26,18 +26,18 @@
         }}</ion-button>
       </div>
       <div class="synopse">
-        <strong>Synopse:</strong>
+        <strong>Synopse</strong>
         <p>{{ synopse }}</p>
       </div>
       <div class="reviews">
-        <strong>Reviews</strong>
+        <strong>Reviews - {{getAvgScore()}}  <img :src="require('@/assets/star.png')" width="13" height="13" /></strong>
         <div class="review" v-for="review in reviews" :key="review.text">
-          <a>{{ review.text }}</a>
-          <a>
+          <strong> {{review.user }} <a>
             ( {{ review.score }}/10
             <img :src="require('@/assets/star.png')" width="13" height="13" />
-            )</a
-          >
+            )</a></strong>
+
+          <p>{{ review.text }}</p>
         </div>
       </div>
     </ion-content>
@@ -75,8 +75,10 @@
       getDoc(this.bookRef).then((val) => {
         this.book = val.data();
         this.bookId = val.id;
+        this.reviews = this.book.reviews
       });
     },
+    
     data() {
       {
         return {
@@ -84,20 +86,8 @@
           bookId :"",
           synopse:
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sit amet velit velit. Curabitur nec massa vitae dui finibus luctus. Nunc a ex nec mauris lacinia iaculis sit amet sed orci. Morbi pulvinar porta urna non pulvinar. Cras at leo luctus, semper mi quis, congue ante. In hac habitasse platea dictumst. Phasellus euismod leo sit amet vulputate sagittis. Cras iaculis neque urna. Integer sollicitudin auctor turpis, a iaculis magna volutpat malesuada.",
-          reviews: [
-            {
-              text: "book was very good. pls read",
-              score: 9.5,
-            },
-            {
-              text: "have read better. Throw in the trash and burn",
-              score: 1,
-            },
-            {
-              text: "book was very good. pls read",
-              score: 9.5,
-            },
-          ],
+          reviews: [],
+          avgScore: 0,
         };
       }
     },
@@ -122,6 +112,15 @@
           this.router.push("/qrcode");
         }
       },
+
+      getAvgScore(){
+        this.avgScore = 0
+        for(let i=0; i<this.reviews.length; i++){
+          this.avgScore += this.reviews[i].score;
+        }
+        this.avgScore = this.avgScore/this.reviews.length
+        return Math.round(this.avgScore * 10)/10
+      }
     },
   });
 </script>
@@ -159,12 +158,10 @@
   }
 
   .synopse {
-    text-align: left;
-
     position: relative;
-    left: 0;
-    right: 0;
-    top: 10px;
+
+    margin-top: 30px;
+    margin-left: 10px;
     /* transform: translateY(-50%); */
   }
 
@@ -217,12 +214,14 @@
 
     position: relative;
     margin-top: 20px;
+    margin-left: 10px;
 
     align-self: left;
   }
 
   .reviews strong {
     font-size: 20px;
+    margin-bottom: 10px;
   }
 
   .review {
