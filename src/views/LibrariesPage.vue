@@ -46,7 +46,7 @@
                                                 <h4> Confirm reservation details</h4>
                                                 <font-awesome-icon @click="closeMessage()" icon=" fa-xmark" />
                                             </div>
-                                            <p><span class="bolded">Book: </span> {{ book }}</p>
+                                            <p><span class="bolded">Book: </span> {{ book.title }}</p>
                                             <p><span class="bolded">Library: </span> {{ library['name'] }}</p>
                                             <p><span class="bolded">User: </span> ambrosio</p>
                                         </div>
@@ -74,7 +74,6 @@
                             </Transition>
                         </div>
                     </div>
-
                 </div>
             </div>
         </ion-content>
@@ -91,10 +90,7 @@ import { defineComponent, onMounted } from 'vue';
 import ToolbarComponent from '@/components/Toolbar.vue'
 import { homeOutline, mailOutline, callOutline} from 'ionicons/icons';
 import { useFirestore } from 'vuefire'
-import { collection, setDoc,addDoc, getDocs, doc } from 'firebase/firestore'
-
-
-let num = 0;
+import { collection, setDoc,addDoc, getDocs, doc, getDoc } from 'firebase/firestore'
 
 export default defineComponent({
 
@@ -112,7 +108,7 @@ export default defineComponent({
     data() {
         return {
             regionsShow: "All",
-            book: "",
+            book: "" as any,
             bookId :"",
             regions: [] as any[],
             libraries: [] as any[],
@@ -195,6 +191,8 @@ export default defineComponent({
             if (this.reserveMessage) {
                 library.availability = "Reserved"
                 this.reserveMessage = false;
+                this.book.status = "Waiting Pick Up"
+                setDoc(doc(this.booksDB, this.bookId), this.book)
                 setDoc(doc(this.reservedDB, '/' + this.bookId), {"library": library.name})
                 this.$router.push("/book/" + this.bookId)
                 return
@@ -213,15 +211,18 @@ export default defineComponent({
 
     setup() {
         const db = useFirestore()
+        const booksDB = collection(db, 'books')
         const libraryDb = collection(db, 'libraries')
         const reservedDB = collection(db, 'reserved')
         const notificationDB = collection(db, 'notifications')
-        return { homeOutline, mailOutline, callOutline, db, libraryDb, reservedDB, notificationDB }
+        return { homeOutline, mailOutline, callOutline, db, libraryDb, reservedDB, notificationDB, booksDB }
     },
 
     mounted() {
-        this.book = this.$route.query.name as string
         this.bookId = this.$route.params.bookId as string
+        getDoc(doc(this.booksDB,this.bookId )).then((v) => {
+            this.book = v.data()
+        })
         getDocs(this.libraryDb).then((val) => {
             val.forEach(element => {
                 this.libraries.push(element.data());
@@ -233,11 +234,8 @@ export default defineComponent({
                 group[region] = group[region] ?? [];
                 group[region].push(library);
                 return group;
-            }, {}) as any[];
-
-            
+            }, {}) as any[]; 
         });
-
     }
 
 
