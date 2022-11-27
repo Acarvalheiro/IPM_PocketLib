@@ -1,47 +1,42 @@
 <template>
+  <ion-page id="main-component">
     <MenuComponent />
-    <ion-page id="main-component">
-    <ToolbarComponent />
-    <img class="qrCodePhoto" :src="require('@/assets/QR_code.png')">
-    
+    <img class="qrCodePhoto" :src="require('@/assets/QR_code.png')" />
+
     <div class="qrContent">
-        <h>Show this QR-code at your selected library.</h>
-        <p>
-            You have 7 days to pick up your book.
-            If the time expires your reservation will be automatically cancelled.
-        </p>
+      <h>Show this QR-code at your selected library.</h>
+      <p>
+        You have 7 days to pick up your book. If the time expires your
+        reservation will be automatically cancelled.
+      </p>
     </div>
-    </ion-page>
+  </ion-page>
 </template>
-  
+
 <script lang="ts">
-import { IonContent, IonPage } from '@ionic/vue';
-import { defineComponent } from 'vue';
-import ToolbarComponent from '@/components/Toolbar.vue'
-import MenuComponent from '@/components/MenuComponent.vue'
-let num = 0;
+  import { IonContent, IonPage } from "@ionic/vue";
+  import { defineComponent } from "vue";
+  import MenuComponent from "@/components/MenuComponent.vue";
+  let num = 0;
 
-export default defineComponent({
-    name: 'QRcode',
+  export default defineComponent({
+    name: "QRcode",
     components: {
-        IonPage,
-        MenuComponent,
-        ToolbarComponent
-    }
-});
+      IonPage,
+      MenuComponent,
+    },
+  });
 </script>
-  
+
 <style scoped>
-
-.qrCodePhoto {
+  .qrCodePhoto {
     scale: 0.8;
-}
+  }
 
-.qrContent {
+  .qrContent {
     display: flex;
     text-align: center;
     justify-content: center;
     flex-direction: column;
-}
-
+  }
 </style>
