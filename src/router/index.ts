@@ -27,7 +27,7 @@ const routes: Array<RouteRecordRaw> = [
     component: UserProfile
   },
   {
-    path: '/book',
+    path: '/book/:bookId',
     name: 'Book',
     component: BookPage
   },

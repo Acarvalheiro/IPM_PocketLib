@@ -3,11 +3,13 @@
     <img
       :src="require(`@/assets/${image}`)"
       alt="image"
-      @click="() => router.push('/book')"
+      @click="() => router.push('/book/' + id)"
     />
     <div class="text-wrapper">
-      <h3 @click="() => router.push('/book')">{{ title }}</h3>
-      <p class="author" @click="() => router.push('/book')">{{ author }}</p>
+      <h3 @click="() => router.push('/book/' + id)">{{ title }}</h3>
+      <p class="author" @click="() => router.push('/book/' + id)">
+        {{ author }}
+      </p>
       <ion-list class="add-dropdown" v-show="!inList">
         <ion-item>
           <ion-select
