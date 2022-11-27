@@ -3,11 +3,11 @@
   <ion-searchbar inputmode="text" @ionInput="handleChange($event)" placeholder="Search books" value=""></ion-searchbar>
   <ion-list style="width: 75%" v-if="canIShow">
     <ion-item v-for="result in results" :key=result.title>
-      <ion-label>
+      <ion-label @click="() => router.push('/book/:bookId')" :bookId=result.id>
         <p style="text-align:left;">
           {{ result.title }}
           <span style="float:right;">
-            <img class="imgSearchBook" :src="require('@/assets/PocketLib.png')">
+            <img class="imgSearchBook" :src="require('@/assets/' + result.image)">
           </span>
         </p>
         {{ result.author }}
@@ -21,27 +21,19 @@ import { IonItem, IonList, IonSearchbar, IonLabel, IonInput } from '@ionic/vue';
 import { defineComponent, ref } from 'vue';
 import { useFirestore } from "vuefire";
 import { collection, query, where, getDocs, doc, getDoc, forEach } from "firebase/firestore";
+import { useRouter } from 'vue-router';
 
 export default defineComponent({
   components: { IonItem, IonList, IonSearchbar, IonLabel },
 
   setup() {
-    /**const books = [{ title: "Clean Code1", author: "Goulão", image: "clean-code.jpg" },
-    { title: "A", author: "Goulão", image: "clean-code.jpg" },
-    { title: "Clean Code3", author: "Goulão", image: "clean-code.jpg" }];
 
+    const router = useRouter();
     const results = ref([{ title: "", author: "", image: "" }]);
-
-    return { books, results };*/
-
-
     const db = useFirestore();
-
     const booksDB = collection(db, 'books')
 
-    //const diff = getDoc(doc(db, 'books'));
-
-    return { booksDB, db };
+    return {router, booksDB, db, results };
   },
 
   data() {
