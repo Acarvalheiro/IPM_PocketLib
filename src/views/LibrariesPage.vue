@@ -1,7 +1,8 @@
 <template>
-    <ion-page>
-        <ion-content>
-            <ToolbarComponent />
+    <ion-page id="main-component">
+        <MenuComponent/>
+        <ToolbarComponent/>
+        <ion-content>  
             <ion-list class="reservation-type">
                 <ion-item>
                     <ion-select interface="popover" placeholder="Select Region" @ion-change="onChange($event)">
@@ -91,6 +92,7 @@ import ToolbarComponent from '@/components/Toolbar.vue'
 import { homeOutline, mailOutline, callOutline} from 'ionicons/icons';
 import { useFirestore } from 'vuefire'
 import { collection, setDoc,addDoc, getDocs, doc, getDoc } from 'firebase/firestore'
+import MenuComponent from '@/components/MenuComponent.vue'
 
 export default defineComponent({
 
@@ -98,12 +100,14 @@ export default defineComponent({
     components: {
         IonContent,
         IonPage,
+        MenuComponent,
         ToolbarComponent,
         IonButton,
         IonList,
         IonItem,
         IonSelect,
         IonSelectOption,
+        
     },
     data() {
         return {
