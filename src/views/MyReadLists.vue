@@ -2,7 +2,6 @@
   <ion-page id="main-component">
     <ion-content>
       <MenuComponent />
-      <ToolbarComponent />
       <div class="readlists-header">
         <h4>Your Readlists</h4>
         <ion-icon
@@ -59,7 +58,6 @@
   import ReadListInfo from "@/components/ReadListInfo.vue";
   import { useFirestore, useCollection } from "vuefire";
   import { collection, addDoc, doc, deleteDoc } from "firebase/firestore";
-  import ToolbarComponent from "@/components/Toolbar.vue";
   import MenuComponent from "@/components/MenuComponent.vue";
 
   export default defineComponent({
@@ -73,7 +71,6 @@
       IonItem,
       IonInput,
       IonButton,
-      ToolbarComponent,
       MenuComponent,
     },
     data() {

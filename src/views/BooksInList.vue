@@ -2,7 +2,6 @@
   <ion-page id="main-component">
     <ion-content>
       <MenuComponent />
-      <ToolbarComponent />
       <h2 class="list-title">{{ listName }}</h2>
       <book-list
         :books="books"
@@ -20,7 +19,6 @@
   import { useFirestore } from "vuefire";
   import { doc, getDoc, updateDoc, arrayRemove } from "firebase/firestore";
   import { useRoute } from "vue-router";
-  import ToolbarComponent from "@/components/Toolbar.vue";
   import MenuComponent from "@/components/MenuComponent.vue";
 
   export default defineComponent({
@@ -29,7 +27,6 @@
       BookList,
       IonContent,
       IonPage,
-      ToolbarComponent,
       MenuComponent,
     },
     data() {

@@ -2,7 +2,6 @@
   <ion-page id="main-component">
     <ion-content>
       <MenuComponent />
-      <ToolbarComponent />
       <h4 class="notifications-title">Your Notifications</h4>
       <book-list
         :books="books"
@@ -19,7 +18,6 @@
   import BookList from "@/components/BookList.vue";
   import { useFirestore, useCollection } from "vuefire";
   import { collection, doc, getDoc, getDocs } from "firebase/firestore";
-  import ToolbarComponent from "@/components/Toolbar.vue";
   import MenuComponent from "@/components/MenuComponent.vue";
 
   export default defineComponent({
@@ -28,7 +26,6 @@
       BookList,
       IonContent,
       IonPage,
-      ToolbarComponent,
       MenuComponent,
     },
     data() {

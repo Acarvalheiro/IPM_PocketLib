@@ -24,7 +24,12 @@
         <ion-button @click="verifyUser()" class="log-in-button">
           Log in
         </ion-button>
-        <ion-button class="create-acc-button"> Create Account </ion-button>
+        <ion-button
+          class="create-acc-button"
+          @click="() => router.push('/create')"
+        >
+          Create Account
+        </ion-button>
       </div>
     </ion-content>
   </ion-page>
@@ -36,7 +41,7 @@
   import { useFirestore } from "vuefire";
   import { useCollection } from "vuefire";
   import { collection, getDoc, doc, setDoc } from "firebase/firestore";
-  import router from "@/router";
+  import { useRouter } from "vue-router";
 
   export default defineComponent({
     name: "LogInPage",
@@ -54,12 +59,13 @@
       };
     },
     setup() {
+      const router = useRouter();
       const image = computed(() => require("@/assets/PocketLib.png"));
       const db = useFirestore();
       const users = collection(db, "user");
       const loggedUser = collection(db, "loggedUser");
       const database = useCollection(collection(db, "books"));
-      return { database, db, users, image, loggedUser };
+      return { database, db, users, image, loggedUser, router };
     },
 
     methods: {
@@ -68,7 +74,7 @@
           let user = val.data();
           if (user != undefined && user.pass == this.pass) {
             setDoc(doc(this.loggedUser, "/" + this.userName), {});
-            router.push("/home");
+            this.router.push("/home");
           }
         });
       },

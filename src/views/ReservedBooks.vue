@@ -2,7 +2,6 @@
   <ion-page id="main-component">
     <ion-content>
       <MenuComponent />
-      <ToolbarComponent />
       <div class="reservation-type-wrapper">
         <h4>Your reservations</h4>
         <ion-list class="reservation-type">
@@ -45,7 +44,6 @@
   import BookList from "@/components/BookList.vue";
   import { useFirestore, useCollection } from "vuefire";
   import { collection, doc, getDoc, getDocs } from "firebase/firestore";
-  import ToolbarComponent from "@/components/Toolbar.vue";
   import MenuComponent from "@/components/MenuComponent.vue";
 
   export default defineComponent({
@@ -58,7 +56,6 @@
       IonItem,
       IonSelect,
       IonSelectOption,
-      ToolbarComponent,
       MenuComponent,
     },
     data() {

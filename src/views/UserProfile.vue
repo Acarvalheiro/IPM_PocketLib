@@ -2,21 +2,18 @@
   <ion-page id="main-component">
     <ion-content>
       <MenuComponent />
-      <ToolbarComponent />
       <ion-card class="profile-header">
         <div>
           <ion-avatar>
             <img alt="Silhouette of a person's head" :src="image" />
           </ion-avatar>
-          <p>{{ userName }}</p>
+          <p>{{ user.userName }}</p>
         </div>
       </ion-card>
       <ion-card class="info-wrapper">
         <div class="edit-row">
           <ion-icon name="person-outline" size="large"></ion-icon>
-          <ion-button fill="clear" @click="editingInfo = !editingInfo"
-            >Edit</ion-button
-          >
+          <ion-button fill="clear" @click="editInfo()">Edit</ion-button>
         </div>
         <div
           class="info-row"
@@ -33,11 +30,7 @@
       <ion-card class="info-wrapper">
         <div class="edit-row">
           <ion-icon name="star-outline" size="large"></ion-icon>
-          <ion-button
-            fill="clear"
-            @click="editingPreferences = !editingPreferences"
-            >Edit</ion-button
-          >
+          <ion-button fill="clear" @click="editPreferences()">Edit</ion-button>
         </div>
         <div
           class="info-row"
@@ -51,6 +44,9 @@
           </ion-item>
         </div>
       </ion-card>
+      <div class="logout-button">
+        <ion-button fill="clear" @click="logout()">Logout</ion-button>
+      </div>
     </ion-content>
   </ion-page>
 </template>
@@ -69,10 +65,17 @@
   import { addIcons } from "ionicons";
   import { personOutline, starOutline } from "ionicons/icons";
   import { defineComponent } from "vue";
-  import ToolbarComponent from "@/components/Toolbar.vue";
   import MenuComponent from "@/components/MenuComponent.vue";
+  import { useRouter } from "vue-router";
   import { useFirestore } from "vuefire";
-  import { collection, doc, arrayUnion, updateDoc } from "firebase/firestore";
+  import {
+    collection,
+    doc,
+    getDocs,
+    getDoc,
+    setDoc,
+    deleteDoc,
+  } from "firebase/firestore";
 
   export default defineComponent({
     name: "UserProfile",
@@ -84,49 +87,107 @@
       IonContent,
       IonItem,
       IonInput,
-      ToolbarComponent,
       MenuComponent,
       IonPage,
     },
 
     data() {
       return {
-        userName: "Ambrosio123",
+        user: "",
         image: "https://ionicframework.com/docs/img/demos/avatar.svg",
         information: [
           {
             label: "Full Name",
-            content: "Ambrosio Maria Silva",
+            content: "",
           },
           {
             label: "Date of Birth",
-            content: "28/02/1996",
+            content: "Add date of birth",
           },
           {
             label: "Gender",
-            content: "Male",
+            content: "Add your gender",
           },
         ],
         preferences: [
           {
             label: "Favorite Libraries",
-            content: "Alcantara, Amadora",
+            content: "Add favourite libraries",
           },
           {
             label: "Favorite Genres",
-            content: "Fantasy, Drama",
+            content: "Add favourite genres",
           },
         ],
         editingInfo: false,
         editingPreferences: false,
       };
     },
+    setup() {
+      const router = useRouter();
 
+      const db = useFirestore();
+      const loggedUser = collection(db, "loggedUser");
+
+      return { db, loggedUser, router };
+    },
+    mounted() {
+      getDocs(this.loggedUser).then((val) => {
+        val.forEach((elem) => {
+          let userRef = getDoc(doc(this.db, "user", elem.id));
+          userRef.then((v) => {
+            this.user = v.data();
+            this.information[0].content = this.user.name;
+            if (this.user.dateBirth != null) {
+              this.information[1].content = this.user.dateBirth;
+            }
+            if (this.user.gender != null) {
+              this.information[2].content = this.user.gender;
+            }
+            if (this.user.favLibraries != null) {
+              this.preferences[0].content = this.user.favLibraries;
+            }
+            if (this.user.favGenres != null) {
+              this.preferences[1].content = this.user.favGenres;
+            }
+          });
+        });
+      });
+    },
     created() {
       addIcons({
         "person-outline": personOutline,
         "star-outline": starOutline,
       });
+    },
+    methods: {
+      editInfo() {
+        this.editingInfo = !this.editingInfo;
+        if (this.editingInfo == false) {
+          this.updateUser();
+        }
+      },
+      editPreferences() {
+        this.editingPreferences = !this.editingPreferences;
+        if (this.editingPreferences == false) {
+          this.updateUser();
+        }
+      },
+      updateUser() {
+        setDoc(doc(this.db, "user", this.user.userName), {
+          userName: this.user.userName,
+          pass: this.user.pass,
+          name: this.information[0].content,
+          dateBirth: this.information[1].content,
+          gender: this.information[2].content,
+          favLibraries: this.preferences[0].content,
+          favGenres: this.preferences[1].content,
+        });
+      },
+      logout() {
+        deleteDoc(doc(this.db, "loggedUser", this.user.userName));
+        this.router.push("/login");
+      },
     },
   });
 </script>
@@ -195,5 +256,10 @@
   .info-wrapper .edit-row ion-icon {
     width: 25px;
     height: 25px;
+  }
+  .logout-button {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
   }
 </style>

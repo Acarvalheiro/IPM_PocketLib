@@ -2,7 +2,6 @@
   <ion-page id="main-component">
     <ion-content>
       <MenuComponent />
-      <ToolbarComponent />
       <div class="search-info">
         <h5>Showing results for "{{ input }}"</h5>
         <ion-button size="small" color="medium">
@@ -26,7 +25,6 @@
   import { useFirestore, useCollection } from "vuefire";
   import { collection, getDocs, query, where } from "firebase/firestore";
   import { useRoute } from "vue-router";
-  import ToolbarComponent from "@/components/Toolbar.vue";
   import MenuComponent from "@/components/MenuComponent.vue";
 
   export default defineComponent({
@@ -37,7 +35,6 @@
       IonPage,
       IonButton,
       IonIcon,
-      ToolbarComponent,
       MenuComponent,
     },
     data() {
