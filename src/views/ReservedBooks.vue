@@ -80,6 +80,7 @@
         getDocs(this.reserved).then((val) => {
           val.forEach((elem) => {
             let bookRef = getDoc(doc(this.db, "books", elem.id));
+            let library = elem.data().library;
             bookRef.then((v) => {
               let book = v.data();
               this.books.push({
@@ -90,6 +91,7 @@
                 status: book.status,
                 show: true,
                 date: "20/12/2022",
+                library: library,
               });
             });
           });
@@ -112,7 +114,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 20px 10px;
+    padding: 10px;
   }
   .reservation-type-wrapper h4 {
     margin: 0;

@@ -47,8 +47,11 @@
       >
         {{ status }}
       </p>
-      <p class="date" v-if="reserved && pickedUp()">Return before {{ date }}</p>
-      <p class="date" v-if="reserved && !pickedUp()">
+      <p class="library" v-if="reserved">{{ library }}</p>
+      <p class="date" v-if="reserved && pickedUp() && status != null">
+        Return before {{ date }}
+      </p>
+      <p class="date" v-if="reserved && !pickedUp() && status != null">
         Pick up before {{ date }}
       </p>
     </div>
@@ -125,6 +128,10 @@
         type: String,
         required: false,
       },
+      library: {
+        type: String,
+        required: false,
+      },
     },
     data() {
       return {
@@ -198,6 +205,11 @@
   .book-info-wrapper .text-wrapper .date {
     font-size: 11px;
     margin: 0;
+  }
+  .book-info-wrapper .text-wrapper .library {
+    font-size: 11px;
+    margin: 0;
+    margin-bottom: 5px;
   }
   .book-info-wrapper .text-wrapper .add-dropdown {
     padding: 0;

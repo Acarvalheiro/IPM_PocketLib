@@ -34,7 +34,6 @@
         v-bind:key="list.id"
         :title="list.listName"
         :id="list.id"
-        :owner="list.owner"
         @removeEvent="presentRemoveAlert"
       >
       </read-list-info>
