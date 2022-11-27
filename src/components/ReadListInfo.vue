@@ -8,7 +8,6 @@
     />
     <div class="text-wrapper">
       <h3 @click="() => router.push('/readlist/' + id)">{{ title }}</h3>
-      <p @click="() => router.push('/readlist/' + id)">{{ owner }}</p>
       <ion-button
         size="small"
         color="danger"
@@ -39,11 +38,6 @@
       title: {
         type: String,
         required: true,
-      },
-      owner: {
-        type: String,
-        required: false,
-        default: "PocketLib",
       },
       id: {
         type: String,

@@ -10,6 +10,7 @@ import BooksInList from '../views/BooksInList.vue'
 import LogInPage from '../views/UserLoginPage.vue'
 import CreateAccountPage from '../views/CreateAccountPage.vue'
 import Libraries from '../views/LibrariesPage.vue'
+import Notifications from '../views/NotificationsPage.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -40,6 +41,11 @@ const routes: Array<RouteRecordRaw> = [
     path: '/reserved',
     name: 'Reserved',
     component: ReservedBooks
+  },
+  {
+    path: '/notifications',
+    name: 'Notifications',
+    component: Notifications
   },
   {
     path: '/myreadlists',

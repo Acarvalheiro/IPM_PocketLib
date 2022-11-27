@@ -13,6 +13,7 @@
     :status="book.status"
     :reserved="reserved"
     :date="book.date"
+    :library="book.library"
   >
   </book-info>
 </template>
