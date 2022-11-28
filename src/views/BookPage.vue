@@ -38,7 +38,6 @@
         <div class="reviews">
           <div class="review-header">
             <h2>Reviews</h2>
-            
           </div>
           <div class="review" v-for="review in reviews" :key="review.text">
             <div class="review-score">
@@ -152,7 +151,7 @@ export default defineComponent({
       if (status === "") {
         this.router.replace({ path: "/libraries/" + this.bookId, query: { name: this.book.title } })
       } else if (status === "Picked Up") {
-        this.router.push("/return");
+        this.router.push("/scanner");
       } else {
         this.router.push("/qrcode");
       }

@@ -28,8 +28,18 @@
       IonPage,
       MenuComponent,
     },
+    ionViewWillEnter() {
+      this.db = useFirestore();
+      this.notifications = collection(this.db, "notifications");
+      this.readlists = useCollection(collection(this.db, "readlists"));
+      this.books = []
+      this.getBooks();
+    },
     data() {
       return {
+        db: '',
+        notifications:'',
+        readlists:'',
         books: [],
       };
     },
@@ -52,15 +62,6 @@
           });
         });
       },
-    },
-    setup() {
-      const db = useFirestore();
-      const notifications = collection(db, "notifications");
-      const readlists = useCollection(collection(db, "readlists"));
-      return { notifications, readlists, db };
-    },
-    mounted() {
-      this.getBooks();
     },
   });
 </script>

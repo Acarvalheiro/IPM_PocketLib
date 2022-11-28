@@ -37,6 +37,11 @@
             Reserved Books
           </ion-button>
         </ion-item>
+        <ion-item>
+          <ion-button fill="clear" size="large" @click="router.push('/notifications'), isOpen=false" class="button-native">
+            My Notifications
+          </ion-button>
+        </ion-item>
       </ion-list>
     </div>
   </div>

@@ -58,8 +58,18 @@
       IonSelectOption,
       MenuComponent,
     },
+    ionViewWillEnter() {
+      this.db = useFirestore();
+      this.reserved = collection(this.db, "reserved");
+      this.readlists = useCollection(collection(this.db, "readlists"));
+      this.books = []
+      this.getBooks();
+    },
     data() {
       return {
+        db: '',
+        reserved:'',
+        readlists:'',
         books: [],
         statusOptions: ["All", "Picked Up", "Waiting Pick Up"],
         filterOption: "All",
@@ -98,15 +108,6 @@
           });
         });
       },
-    },
-    setup() {
-      const db = useFirestore();
-      const reserved = collection(db, "reserved");
-      const readlists = useCollection(collection(db, "readlists"));
-      return { reserved, readlists, db };
-    },
-    mounted() {
-      this.getBooks();
     },
   });
 </script>
