@@ -1,5 +1,5 @@
 <template>
-  <ion-page id="main-component">
+  <ion-page>
     <MenuComponent />
     <ion-content>
       <ion-list class="reservation-type">

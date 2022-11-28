@@ -1,6 +1,6 @@
 <template>
   <ion-page>
-    <menu-component></menu-component>
+    <MenuComponent />
     <ion-content>
       <div class="book-main">
         <div class="cover" v-if="book.image !== undefined">
@@ -38,7 +38,7 @@
         <div class="reviews">
           <div class="review-header">
             <h2>Reviews</h2>
-            <ion-icon v-for="n in getAvgScore()" :key="n" name="star" color="warning"></ion-icon>
+            
           </div>
           <div class="review" v-for="review in reviews" :key="review.text">
             <div class="review-score">
@@ -157,15 +157,6 @@ export default defineComponent({
         this.router.push("/qrcode");
       }
     },
-
-    getAvgScore() {
-      this.avgScore = 0
-      for (let i = 0; i < this.reviews.length; i++) {
-        this.avgScore += this.reviews[i].score;
-      }
-      this.avgScore = this.avgScore / this.reviews.length
-      return Math.round(this.avgScore * 10) / 10
-    }
   },
 });
 </script>
