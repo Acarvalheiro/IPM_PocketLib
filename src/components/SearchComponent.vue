@@ -1,6 +1,8 @@
 <template>
 
-  <ion-searchbar inputmode="text"  @ionInput="handleChange($event)" placeholder="Search books" value="" @keypress="handleSubmit($event)"></ion-searchbar>
+  <ion-searchbar inputmode="text" @ionInput="handleChange($event)" placeholder="Search books" value="">
+    <div class="clicksearch" @click="handleSubmit"></div>
+  </ion-searchbar>
   <ion-list style="width: 75%; z-index: 999; position: absolute; width: 100%;" v-if="canIShow">
     <ion-item v-for="result in results" :key=result.title>
       <ion-label @click="() => router.push('/book/' + result.id)">
@@ -29,11 +31,11 @@ export default defineComponent({
   setup() {
 
     const router = useRouter();
-    const results = ref([{id:"", title: "", author: "", image: "" }]);
+    const results = ref([{ id: "", title: "", author: "", image: "" }]);
     const db = useFirestore();
     const booksDB = collection(db, 'books')
 
-    return {router, booksDB, db, results };
+    return { router, booksDB, db, results };
   },
 
   data() {
@@ -50,29 +52,29 @@ export default defineComponent({
     handleChange(event) {
       const query = event.target.value.toLowerCase();
       this.canIShow = true;
-      this.currSearchVal=event.target.value;
+      this.currSearchVal = event.target.value;
       this.results = this.books.filter((book) => {
         return (book.title.toLowerCase().indexOf(query) > -1 && query != "");
       })
     },
     handleSubmit(event) {
       console.log(event.value)
-      if (event && event.key === "Enter") { // Do stuff}
-        this.router.push('/search/' + this.currSearchVal)
+
+      this.router.push('/search/' + this.currSearchVal)
+
     }
-  }
   },
   mounted() {
-    getDocs(this.booksDB).then((val) =>  {
-      val.forEach(element =>  {
+    getDocs(this.booksDB).then((val) => {
+      val.forEach(element => {
         console.log(element.data());
         let book = element.data();
-              this.books.push({
-                id: element.id,
-                title: book.title,
-                author: book.author,
-                image: book.image,
-              });
+        this.books.push({
+          id: element.id,
+          title: book.title,
+          author: book.author,
+          image: book.image,
+        });
       })
     });
   }
@@ -90,8 +92,16 @@ export default defineComponent({
   width: 75%;
 }
 
+ion-searchbar .clicksearch {
+  position: absolute;
+  left: 10px;
+  width: 40px;
+  height: 40px;
+  z-index: 900;
+}
+
 .imgSearchBook {
-    width: 40px;
-    height: 55px;
-} 
+  width: 40px;
+  height: 55px;
+}
 </style>
