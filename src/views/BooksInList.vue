@@ -33,6 +33,8 @@
       return {
         books: [],
         listName: "",
+        db: "",
+        list: "",
       };
     },
     methods: {
@@ -56,8 +58,8 @@
         });
       },
     },
-    setup() {
-      const presentAlert = async (title, id) => {
+    ionViewWillEnter() {
+      this.presentAlert = async (title, id) => {
         const alert = await alertController.create({
           header: 'Remove "' + title + '"?',
           buttons: [
@@ -68,7 +70,7 @@
             {
               text: "Confirm",
               handler: () => {
-                updateDoc(doc(db, "readlists", listId), {
+                updateDoc(doc(this.db, "readlists", listId), {
                   books: arrayRemove(id),
                 });
                 document.getElementById(id).remove();
@@ -79,17 +81,16 @@
 
         await alert.present();
       };
+      const { listId } = this.route.params;
 
-      const route = useRoute();
-      const { listId } = route.params;
-
-      const db = useFirestore();
-      const list = getDoc(doc(db, "readlists", listId));
-
-      return { presentAlert, list, db };
-    },
-    mounted() {
+      this.db = useFirestore();
+      this.list = getDoc(doc(this.db, "readlists", listId));
+      this.books = [];
       this.getBooks();
+    },
+    setup() {
+      const route = useRoute();
+      return { route };
     },
   });
 </script>
