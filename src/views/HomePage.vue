@@ -4,7 +4,9 @@
     <ion-content :fullscreen="true">
       <div class="container">
         <img :src="require('@/assets/PocketLib.png')">
-        <SearchComponent />
+        <div style="position:relative">
+          <SearchComponent />
+        </div>
         <ReadListSelectorComp />
       </div>
       <HorizBookList :title="'Trending'" :books="trending"></HorizBookList>
@@ -51,7 +53,7 @@ export default defineComponent({
     let canIShow = false;
     let title = "";
     let trending = [];
-    return {title,canIShow,trending}
+    return { title, canIShow, trending }
   },
   mounted() {
     getDocs(this.trendingDB).then((val) => {
@@ -60,7 +62,7 @@ export default defineComponent({
         bookRef.then((v) => {
           let book = v.data();
           this.trending.push({
-            id:v.id,
+            id: v.id,
             title: book.title,
             image: book.image,
           })
