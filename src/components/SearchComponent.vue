@@ -1,7 +1,7 @@
 <template>
 
-  <ion-searchbar inputmode="text"  @ionInput="handleChange($event)" placeholder="Search books" value=""></ion-searchbar>
-  <ion-list style="width: 75%; z-index: 999;" v-if="canIShow">
+  <ion-searchbar inputmode="text"  @ionInput="handleChange($event)" placeholder="Search books" value="" @keypress="handleSubmit($event)"></ion-searchbar>
+  <ion-list style="width: 75%; z-index: 999; position: absolute; width: 100%;" v-if="canIShow">
     <ion-item v-for="result in results" :key=result.title>
       <ion-label @click="() => router.push('/book/' + result.id)">
         <p style="text-align:left;">
@@ -29,7 +29,7 @@ export default defineComponent({
   setup() {
 
     const router = useRouter();
-    const results = ref([{ title: "", author: "", image: "" }]);
+    const results = ref([{id:"", title: "", author: "", image: "" }]);
     const db = useFirestore();
     const booksDB = collection(db, 'books')
 
@@ -42,6 +42,7 @@ export default defineComponent({
       canIShow,
       books: [],
       listName: "",
+      currSearchVal: "",
     }
   },
 
@@ -49,10 +50,17 @@ export default defineComponent({
     handleChange(event) {
       const query = event.target.value.toLowerCase();
       this.canIShow = true;
+      this.currSearchVal=event.target.value;
       this.results = this.books.filter((book) => {
         return (book.title.toLowerCase().indexOf(query) > -1 && query != "");
       })
     },
+    handleSubmit(event) {
+      console.log(event.value)
+      if (event && event.key === "Enter") { // Do stuff}
+        this.router.push('/search/' + this.currSearchVal)
+    }
+  }
   },
   mounted() {
     getDocs(this.booksDB).then((val) =>  {
@@ -60,7 +68,7 @@ export default defineComponent({
         console.log(element.data());
         let book = element.data();
               this.books.push({
-                id: book.id,
+                id: element.id,
                 title: book.title,
                 author: book.author,
                 image: book.image,

@@ -1,18 +1,12 @@
 <template>
   <ion-list>
     <ion-item>
-      <ion-select
-        interface="popover"
-        placeholder="Your readbooks.."
-        @IonChange="handleChange($event)"
-      >
-        <IonSelectOption
-          v-for="list in readlists"
-          v-bind:key="list.id"
-          :id="list.id"
-          :value="list.id"
-        >
+      <ion-select interface="popover" placeholder="Your readbooks.." @IonChange="handleChange($event)">
+        <IonSelectOption v-for="list in readlists" v-bind:key="list.id" :id="list.id" :value="list.id">
           {{ list.listName }}
+        </IonSelectOption>
+        <IonSelectOption :value="Close">
+          Close
         </IonSelectOption>
       </ion-select>
     </ion-item>
@@ -23,40 +17,44 @@
 </template>
 
 <script>
-  import { IonList, IonItem, IonSelect, IonSelectOption } from "@ionic/vue";
-  import { defineComponent } from "vue";
-  import { useFirestore, useCollection } from "vuefire";
-  import { collection, getDoc, doc } from "firebase/firestore";
-  import { useRouter } from "vue-router";
-  import HorizBookList from "@/components/HorizBookList.vue";
+import { IonList, IonItem, IonSelect, IonSelectOption } from "@ionic/vue";
+import { defineComponent } from "vue";
+import { useFirestore, useCollection } from "vuefire";
+import { collection, getDoc, doc } from "firebase/firestore";
+import { useRouter } from "vue-router";
+import HorizBookList from "@/components/HorizBookList.vue";
 
-  export default defineComponent({
-    name: "ReadListSelectorComp",
-    components: {
-      IonList,
-      IonItem,
-      IonSelect,
-      IonSelectOption,
-      HorizBookList,
-    },
-    data() {
-      return {
-        books: [],
-        popoverOpen: false,
-        currentSelectedRl: "",
-        selected: false,
-      };
-    },
-    setup() {
-      const router = useRouter();
-      const db = useFirestore();
-      const listsRef = collection(db, "readlists");
-      const readlists = useCollection(collection(db, "readlists"));
+export default defineComponent({
+  name: "ReadListSelectorComp",
+  components: {
+    IonList,
+    IonItem,
+    IonSelect,
+    IonSelectOption,
+    HorizBookList,
+  },
+  data() {
+    return {
+      books: [],
+      popoverOpen: false,
+      currentSelectedRl: "",
+      selected: false,
+    };
+  },
+  setup() {
+    const router = useRouter();
+    const db = useFirestore();
+    const listsRef = collection(db, "readlists");
+    const readlists = useCollection(collection(db, "readlists"));
 
-      return { router, readlists, listsRef, db };
-    },
-    methods: {
-      handleChange(event) {
+    return { router, readlists, listsRef, db };
+  },
+  methods: {
+    handleChange(event) {
+      console.log(event.target.value)
+      if (event.target.value.trim() === "Close") {
+        this.selected = false;
+      } else {
         this.selected = true;
         this.books = [];
         let listId = event.target.value;
@@ -74,12 +72,13 @@
             });
           });
         });
-      },
+      }
     },
-  });
+  },
+});
 </script>
 <style scoped>
-  .list-wrapper {
-    width: 100%;
-  }
+.list-wrapper {
+  width: 100%;
+}
 </style>
